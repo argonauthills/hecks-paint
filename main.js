@@ -1,1 +1,7 @@
-var alg = require('./libs/linear-algebra')
+var alg = require('./libs/math/linear-algebra')
+var hex = require('./libs/math/hex')
+
+
+// Listeners
+
+

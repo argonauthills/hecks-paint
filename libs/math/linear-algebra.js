@@ -44,6 +44,13 @@ function mInverse(m) {
     return mScalarMult(mPrime, scalar)
 }
 
+function applyMatrix(m, v) {
+    return {
+        x: m.a * v.x + m.b * v.y,
+        y: m.c * v.x + m.d * v.y
+    }
+}
+
 
 
 module.exports = {
@@ -56,5 +63,5 @@ module.exports = {
     vectorsToMatrix: vectorsToMatrix,
     det: det,
     mScalarMult: mScalarMult,
-    mInverse, mInverse,
+    mInverse: mInverse,
 }
