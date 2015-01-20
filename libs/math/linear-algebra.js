@@ -64,4 +64,5 @@ module.exports = {
     det: det,
     mScalarMult: mScalarMult,
     mInverse: mInverse,
+    applyMatrix: applyMatrix
 }

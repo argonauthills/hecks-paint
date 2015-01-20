@@ -21,9 +21,9 @@ function whichHex(basis, point) {
     var baseX = Math.floor(hexP.x)
     var baseY = Math.floor(hexP.y)
 
-    if (inHexAboveAndLeft(p)) return {x: baseX + 1, y: baseY + 1}
-    else if (inHexToLeft(p)) return {x: baseX + 1, y: baseY }
-    else if (inHexAbove(p)) return {x: baseX, y:baseY + 1}
+    if (inHexAboveAndLeft(hexP)) return {x: baseX + 1, y: baseY + 1}
+    else if (inHexToLeft(hexP)) return {x: baseX + 1, y: baseY }
+    else if (inHexAbove(hexP)) return {x: baseX, y:baseY + 1}
     else return {x: baseX, y: baseY}
 
     function inHexAbove(p) {
@@ -46,6 +46,5 @@ function hexName(point) {
 module.exports = {
     hexBasis: hexBasis,
     //cartesianToHexTransformer: cartesianToHexTransformer,
-    whichHex: whichHex,
-    hexName: hexName
+    whichHex: whichHex
 }

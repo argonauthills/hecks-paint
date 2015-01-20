@@ -14,5 +14,6 @@ function line(slope, yInt) {
 }
 
 module.exports = {
-    euclideanModulus: euclideanModulus
+    euclideanModulus: euclideanModulus,
+    line: line
 }
