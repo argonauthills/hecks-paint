@@ -9,3 +9,7 @@
 ### Dev server
 
     webpack-dev-server --port 1337
+
+### Tests
+
+    mocha tests

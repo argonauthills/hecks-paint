@@ -1,1 +1,1 @@
-var vect = require('./libs/vectors')
+var alg = require('./libs/linear-algebra')
