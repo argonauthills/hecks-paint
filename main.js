@@ -2,8 +2,8 @@ var alg = require('./libs/math/linear-algebra')
 var hex = require('./libs/math/hex')
 
 var basis = hex.hexBasis(
-    {x:100, y:0},
-    {x:50, y:100}
+    alg.vScalarMult({x:20, y:0}, 2),
+    alg.vScalarMult({x:10, y:8}, 2)
 )
 
 var grid = require('./libs/grid').newGrid()
