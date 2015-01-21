@@ -7,7 +7,7 @@ function svgPoints(points) {
 }
 
 function polygon(points, color) {
-    return "<polygon points='"+svgPoints(points)+"' style='black'/>"
+    return "<polygon pointer-events='none' points='"+svgPoints(points)+"' style='black'/>"
 }
 
 

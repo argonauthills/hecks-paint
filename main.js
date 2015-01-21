@@ -7,6 +7,7 @@ var basis = hex.hexBasis(
 )
 
 var grid = require('./libs/grid').newGrid()
+var pathsList = {}
 
-var canvas = require('./components/canvas')(document.getElementById("canvas"), grid, basis)
+var canvas = require('./components/canvas')(document.getElementById("canvas"), grid, basis, pathsList)
 

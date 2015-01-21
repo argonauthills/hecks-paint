@@ -27,6 +27,12 @@ function vProjectOn(v, onVector) {
     return vScalarMult(onVector, scalar)
 }
 
+function vReflection(v, reflectOver) {
+    var projection = vProjectOn(v, reflectOver)
+    var opposite = vSubtract(v, projection)
+    return vSubtract(v, vScalarMult(opposite, 2))
+}
+
 ////////////////////////////
 // 2x2 Matrices ////////////
 ////////////////////////////
@@ -36,7 +42,8 @@ function matrix (a, b, c, d) {
 }
 
 function vectorsToMatrix(v1, v2) {
-    return matrix(v1.x, v1.y, v2.x, v2.y)
+    // return matrix(v1.x, v1.y, v2.x, v2.y)
+    return matrix(v1.x, v2.x, v1.y, v2.y)
 }
 
 function det(m) {
@@ -69,6 +76,7 @@ module.exports = {
     vScalarMult: vScalarMult,
     vDotProduct: vDotProduct,
     vProjectOn: vProjectOn,
+    vReflection: vReflection,
 
     matrix: matrix,
     vectorsToMatrix: vectorsToMatrix,

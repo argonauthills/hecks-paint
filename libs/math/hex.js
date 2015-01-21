@@ -5,19 +5,24 @@ function hexBasis(v1, v2) {
     return {v1: v1, v2: v2}
 }
 
+function hexToCartesianMatrix(basis) {
+    return alg.vectorsToMatrix(basis.v1, basis.v2)
+}
+
 function cartesianToHexGridMatrix(basis) {
-    return alg.mInverse(alg.vectorsToMatrix(basis.v1, basis.v2))
+    return alg.mInverse(hexToCartesianMatrix(basis))
 }
 
 function cartesianToHexTransformer(basis) {
     var matrix = cartesianToHexGridMatrix(basis)
+    console.log("matrix", matrix)
     return function (point) {
         return alg.applyMatrix(matrix, point)
     }
 }
 
 function hexToCartesianTransformer(basis) {
-    var matrix = alg.vectorsToMatrix(alg.vScalarMult(basis.v1, 1), alg.vScalarMult(basis.v2, 1))
+    var matrix = hexToCartesianMatrix(basis)
     return function (point) {
         return alg.applyMatrix(matrix, point)
     }
@@ -27,10 +32,13 @@ function whichHex(basis, point) {
     var hexP = cartesianToHexTransformer(basis)(point)
     var baseX = Math.floor(hexP.x)
     var baseY = Math.floor(hexP.y)
+    var remainderX = basic.euclideanModulus(hexP.x, 1)
+    var remainderY = basic.euclideanModulus(hexP.y, 1)
+    var p = {x:remainderX, y:remainderY}
 
-    if (inHexAboveAndLeft(hexP)) return {x: baseX + 1, y: baseY + 1}
-    else if (inHexToLeft(hexP)) return {x: baseX + 1, y: baseY }
-    else if (inHexAbove(hexP)) return {x: baseX, y:baseY + 1}
+    if (inHexAboveAndLeft(p)) return {x: baseX + 1, y: baseY + 1}
+    else if (inHexToLeft(p)) return {x: baseX + 1, y: baseY}
+    else if (inHexAbove(p)) return {x: baseX, y:baseY + 1}
     else return {x: baseX, y: baseY}
 
     function inHexAbove(p) {
@@ -54,8 +62,6 @@ function hexVerticesCenteredOnOrigin(basis) { //in screen coordinates
     var out = radius
     var up = alg.vAdd(halfRadius, upInradius)
     var down = alg.vSubtract(halfRadius, upInradius)
-    console.log("basis", basis, out, up, down)
-
     return [up, out, down, alg.vInverse(up), alg.vInverse(out), alg.vInverse(down)]
 }
 

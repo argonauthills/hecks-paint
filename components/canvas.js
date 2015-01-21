@@ -9,23 +9,16 @@ var pathDetails = {
     id: "asdf",
 }
 
-var pathsList = {}
 
 
-
-module.exports = function main (element, grid, basis) {
-    element.addEventListener("click", clickHandler(element, grid, basis))
-    g.addHexToPath(grid, pathsList, pathDetails, {x:0, y:0})
-    g.addHexToPath(grid, pathsList, pathDetails, {x:1, y:0})
-    g.addHexToPath(grid, pathsList, pathDetails, {x:0, y:1})
-    g.addHexToPath(grid, pathsList, pathDetails, {x:1, y:1})
+module.exports = function main (element, grid, basis, pathsList) {
+    element.addEventListener("click", clickHandler(element, grid, basis, pathsList))
 }
 
 
-function clickHandler(element, grid, basis) {
+function clickHandler(element, grid, basis, pathsList) {
     return function (event) {
         var hexCoords = mouseEventHexCoords(basis, event)
-        console.log("hexCoords", hexCoords.x, hexCoords.y)
         g.addHexToPath(grid, pathsList, pathDetails, hexCoords)
         render(element, grid, basis)
     }
