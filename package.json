@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "description": "A hexagonal paint program",
   "main": "bundle.js",
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^2.4.1"
+  },
   "devDependencies": {
     "css-loader": "^0.9.1",
     "less": "^2.2.0",

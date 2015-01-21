@@ -39,9 +39,7 @@ function whichHex(basis, point) {
     }
 }
 
-function hexName(point) {
-    return "hex_" + point.x + "_" + point.y
-}
+
 
 module.exports = {
     hexBasis: hexBasis,

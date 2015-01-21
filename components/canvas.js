@@ -2,7 +2,7 @@ var hex = require('../libs/math/hex')
 
 var basis = hex.hexBasis(
     {x:100, y:0},
-    {x:0, y:100})
+    {x:50, y:100})
 
 var pathDetails = {
     color: "black",
