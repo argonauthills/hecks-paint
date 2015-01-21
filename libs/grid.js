@@ -5,7 +5,8 @@ function newGrid() { return {} }
 function addHexToPath(grid, pathsList, path, hexCoord) {
     var name = hexName(hexCoord)
     grid[name] = {
-        path: path
+        path: path,
+        coord: hexCoord
     }
     if (!isPathInList(pathsList, path)) pathsList[name] = path
     return {grid:grid, pathsList:pathsList}

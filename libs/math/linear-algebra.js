@@ -11,11 +11,20 @@ function vInverse(v) {
 }
 
 function vSubtract(v1, v2) {
-    return vectorAdd(v1, inv(v2))
+    return vAdd(v1, vInverse(v2))
 }
 
 function vScalarMult(v, scalar) {
     return { x:v.x * scalar, y: v.y * scalar }
+}
+
+function vDotProduct(v1, v2) {
+    return v1.x * v2.x + v1.y * v2.y
+}
+
+function vProjectOn(v, onVector) {
+    var scalar = vDotProduct(v, onVector) / vDotProduct(onVector, onVector)
+    return vScalarMult(onVector, scalar)
 }
 
 ////////////////////////////
@@ -58,6 +67,8 @@ module.exports = {
     vInverse: vInverse,
     vSubtract: vSubtract,
     vScalarMult: vScalarMult,
+    vDotProduct: vDotProduct,
+    vProjectOn: vProjectOn,
 
     matrix: matrix,
     vectorsToMatrix: vectorsToMatrix,
