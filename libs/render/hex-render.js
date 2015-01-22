@@ -3,30 +3,6 @@ var g = require('../grid')
 var _ = require('lodash')
 var svgRender = require('./svg-render')
 
-
-// function groupEdgesByPath (grid) {
-//     var groupedHexes = groupHexesByPath(grid)
-//     return _.mapValues(groupedHexes, function(group) {
-//         return getEdgesFromHexes(grid, group)
-//     })
-// }
-
-// function hexesFromNodes(gNodes) {
-//     return _.pluck(gNodes, "coord")
-// }
-
-// function groupHexesByPath (grid) {
-//     var groupedNodes = _.groupBy(grid, function(gNode) { return gNode.path.id })
-//     return _.mapValues(groupedNodes, function(nodes) { return hexesFromNodes(nodes)})
-// }
-
-// function getEdgesFromHexes(grid, hexes) { //array of coords
-//     return _.reduce(hexes, function(acc, coord) {
-//         return acc.concat(getEdgesFromHex(grid, coord)) 
-//     }, [])
-// }
-
-
 // GET EDGES, COLLECT BY PATH
 
 function edgesGroupedByPath(grid) {
@@ -75,27 +51,28 @@ function edgeCycles(edges) {
     var initLength = checklistLength(checklist)
     var cycles = []
     var currentCycle = []
-    var currentEdge = arbitraryChecklistItem()
+    var currentEdge = arbitraryChecklistItem(checklist)
 
-    for (i == 0; i < checkListLength; i++)
-    _.forEach(edges, function(edge) {
-        var options = nextEdgeOptions(edge)
+    while (true) {
+        var options = nextEdgeOptions(currentEdge)
         var opt0 = options[0]
         var opt1 = options[1]
 
+        removeFromChecklist(checklist, currentEdge.id)
+
         if (isInChecklist(checklist, opt0)) {
             currentCycle.push(checklist[opt0])
-            removeFromChecklist(checklist, opt0)
+            currentEdge = checklist[opt0]
         } else if (isInChecklist(checklist, opt1)) {
             currentCycle.push(checklist[opt1])
-            removeFromChecklist(checklist, opt1)
+            currentEdge = checklist[opt1]
         } else {
             cycles.push(currentCycle)
             currentCycle = []
+            currentEdge = arbitraryChecklistItem(checklist)
         }
-    })
-    cycles.push(currentCycle)  // because the last cycle wouldn't get pushed otherwise
-    console.log("cycles", cycles)
+        if (!currentEdge) break;
+    }
     return cycles
 }
 
@@ -103,7 +80,7 @@ function checklistLength(checklist) {
     return _.keys(checklist).length  // I don't love this length function
 }
 
-function getArbitraryChecklistItem(checklist) {
+function arbitraryChecklistItem(checklist) {
     for (prop in checklist) {  // very hacky
         return checklist[prop]
     }
