@@ -26,7 +26,7 @@ function polygon(points, color) {
 }
 
 function path(d) {
-    return "<path pointer-events='visible-painted' fill-rule='evenodd' d='"+ d +"'>"
+    return "<path pointer-events='none' fill-rule='evenodd' d='"+ d +"'>"
 }
 
 
