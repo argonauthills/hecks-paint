@@ -22,14 +22,16 @@ function removeHexFromPath(grid, pathsList, hexCoord) {
 
 function hexPathInfo(grid, hexCoord) {
     var name = hexName(hexCoord)
-    return grid[name]
+    if (!grid[name]) return null
+    else return grid[name].path
 }
 
 function isHexInPath(grid, path, hexCoord) {
     var name = hexName(hexCoord) 
-    if (!grid[name]) return false
+    var info = hexPathInfo(grid, hexCoord)
+    if (!info) return false
     else {
-        return grid[name].id == path.id
+        return info.id == path.id
     }
 }
 

@@ -22,7 +22,6 @@ function cartesianToHexGridMatrix(basis) {
 
 function cartesianToHexTransformer(basis) {
     var matrix = cartesianToHexGridMatrix(basis)
-    console.log("matrix", matrix)
     return function (point) {
         return alg.applyMatrix(matrix, point)
     }

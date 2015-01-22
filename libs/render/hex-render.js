@@ -1,6 +1,7 @@
 var hm = require('../math/hex')
 var g = require('../grid')
 var _ = require('lodash')
+var svgRender = require('./svg-render')
 
 
 // function groupEdgesByPath (grid) {
@@ -39,13 +40,13 @@ function getHexes(grid) {
 }
 
 function getEdges(grid, hexes) {
-    return _.map(hexes, function (hex) {
-        return getEdgesFromHex(grid, hex)
-    })
+    return _.reduce(hexes, function (acc, hex) {
+        return acc.concat(getEdgesFromHex(grid, hex))
+    }, [])
 }
 
 function getEdgesFromHex(grid, hexCoord) {
-    var neighbors = hexMath.adjacentHexes(hexCoord)
+    var neighbors = hm.adjacentHexes(hexCoord)
     var path = g.hexPathInfo(grid, hexCoord)
 
     var edgyNeighbors = _.filter(neighbors, function (neighbor){
@@ -53,7 +54,7 @@ function getEdgesFromHex(grid, hexCoord) {
         if (!neighborInfo) return true  // is edge if adjacent to background
         else if (neighborInfo.id != path.id) return true  // is edge if different path
         else return false
-    }))
+    })
     
     return _.map(edgyNeighbors, function(neighbor) {
         return {
@@ -63,7 +64,7 @@ function getEdgesFromHex(grid, hexCoord) {
             path: path,
             pathId: path.id
         }
-    }
+    })
 }
 
 
@@ -78,26 +79,23 @@ function edgeCycles(edges) {
         var opt0 = options[0]
         var opt1 = options[1]
 
-        if (isInChecklist(checklist, opt0) {
-            addToCycle( currentCycle, checklist[opt0] )
+        if (isInChecklist(checklist, opt0)) {
+            currentCycle.push(checklist[opt0])
             removeFromChecklist(checklist, opt0)
-        } else if (isInChecklist(checklist, opt1) {
-            addToCycle( currentCycle, checklist[opt1] )
+        } else if (isInChecklist(checklist, opt1)) {
+            currentCycle.push(checklist[opt1])
             removeFromChecklist(checklist, opt1)
         } else {
             cycles.push(currentCycle)
             currentCycle = []
         }
     })
+    cycles.push(currentCycle)  // because the last cycle wouldn't get pushed otherwise
     return cycles
 }
 
-function addToCycle(cycle, edge) {
-    return cycle.push(edge)
-}
-
 function edgeChecklist(edges) {
-    return _.indexBy(edges, function(edgeName) return edgeName), function(edgeName)
+    return _.indexBy(edges, "id")
 }
 
 function isInChecklist(checklist, edgeId) {
@@ -116,23 +114,61 @@ function nextEdgeOptions(edge) {  //TODO consider getting more of this info from
     var pt = edge.owner
     var pos = edge.position
     switch (pos) {
-        case "upRight":   return [ edgeName(pt, "downRight"), edgeName(hm.downRight(p), "up")        ]
-        case "downRight": return [ edgeName(pt, "down"),      edgeName(hm.down(p),      "upRight")   ]
-        case "down":      return [ edgeName(pt, "downLeft"),  edgeName(hm.downLeft(p),  "downRight") ]
-        case "downLeft":  return [ edgeName(pt, "upLeft"),    edgeName(hm.upLeft(p),    "down")      ]
-        case "upLeft":    return [ edgeName(pt, "up"),        edgeName(hm.up(p),        "downLeft")  ]
-        case "up":        return [ edgeName(pt, "upRight"),   edgeName(hm.upRight(p),   "upLeft")    ]
+        case "upRight":   return [ edgeName(pt, "downRight"), edgeName(hm.downRight(pt), "up")        ]
+        case "downRight": return [ edgeName(pt, "down"),      edgeName(hm.down(pt),      "upRight")   ]
+        case "down":      return [ edgeName(pt, "downLeft"),  edgeName(hm.downLeft(pt),  "downRight") ]
+        case "downLeft":  return [ edgeName(pt, "upLeft"),    edgeName(hm.upLeft(pt),    "down")      ]
+        case "upLeft":    return [ edgeName(pt, "up"),        edgeName(hm.up(pt),        "downLeft")  ]
+        case "up":        return [ edgeName(pt, "upRight"),   edgeName(hm.upRight(pt),   "upLeft")    ]
         default: throw new Error(pos + " is not a valid edge position")
     }
 }
 
+// RENDER AS SVG
+
+function render(grid, basis) {
+    var groupedEdges = edgesGroupedByPath(grid)
+    return _.map(groupedEdges, function(edges) {
+        var cycles = edgeCycles(edges)
+        return renderPath(basis, cycles)
+    }).join(" ")   
+}
+
+function renderPath(basis, cycles) {
+    return svgRender.path(_.map(cycles, function(cycle) {
+        return cycleToD(basis, cycle)
+    }).join(" "))
+}
+
+function cycleToD(basis, cycle) {
+    var points = _.reduce(cycle, function(acc, edge) {  // TODO: handle cycle endpoints well.
+        return acc.concat(edgeToPoints(basis, edge))
+    }, [])
+    return svgRender.cycle(points)
+}
+
+function edgeToPoints(basis, edge) {
+    //TODO: change this to be more flexible
+    var vs = hm.hexVertices(basis, edge.owner)
+    switch (edge.position) {
+        case "upRight":   return [vs[0], vs[1]]  // TODO: give these names.
+        case "downRight": return [vs[1], vs[2]]
+        case "down":      return [vs[2], vs[3]]
+        case "downLeft":  return [vs[3], vs[4]]
+        case "upLeft":    return [vs[4], vs[5]]
+        case "up":        return [vs[5], vs[0]]
+    }
+}
+
+
 // Helpers
 
 function edgeName(hexCoord, position) { // position in relation to hex ("up", "downLeft", etc.)
-    "edge_"+hexCoord.x+"_"+hexCoord.y+"_pos_"+position
+    return "edge_"+hexCoord.x+"_"+hexCoord.y+"_pos_"+position
 }
 
 
 
 module.exports = {
+    render: render
 }

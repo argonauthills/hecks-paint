@@ -3,6 +3,7 @@ var basic = require('../libs/math/basic')
 var g = require('../libs/grid')
 var _ = require('lodash')
 var svgRender = require('../libs/render/svg-render')
+var hexRender = require('../libs/render/hex-render')
 var noQuery = require('../libs/no-query')
 
 var pathDetails = {
@@ -85,7 +86,7 @@ function mouseEventHexCoords(basis, event) {
 }
 
 function render(element, grid, basis) {
-    var html = svgString(grid, basis)
+    var html = hexRender.render(grid, basis) //svgString(grid, basis)
     element.innerHTML = html
 }
 
