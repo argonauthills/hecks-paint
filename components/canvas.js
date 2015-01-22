@@ -65,7 +65,6 @@ function mouseMoveHandler(element, grid, basis, pathsList) {
 function addLineOfHexes(grid, pathsList, pathDetails, basis, initialCoords, finalCoords) {
     var numPoints = basic.pythagorean(basis.v1.x, basis.v1.y)  //TODO: better interpolation estimate
     var coords = basic.interpolatedSegment(initialCoords, finalCoords, numPoints)
-    console.log("coords", coords)
     coords.map(function(coord) {
         var c = hex.whichHex(basis, coord)
         g.addHexToPath(grid, pathsList, pathDetails, c)
@@ -101,7 +100,6 @@ function svgString(grid, basis) {
 
 //TODO: hack : delete this:
 function svgHref(anchor, svgString){
-    console.log("a", !!anchor, svgString)
     anchor.setAttribute("download", "test.svg");    
     var url = "data:image/svg+xml;utf8," + encodeURI(wrapSvg(svgString));
     anchor.setAttribute("href", url);

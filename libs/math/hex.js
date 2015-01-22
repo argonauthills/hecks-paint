@@ -1,6 +1,13 @@
 var alg = require('./linear-algebra')
 var basic = require('./basic')
 
+// our hex grid scheme:
+/*
+        <0,1>   <1,0>
+    <0,0>   <1,0>   <2,0>
+       <1,-1>   <2,-1>
+*/
+
 function hexBasis(v1, v2) {
     return {v1: v1, v2: v2}
 }
@@ -72,9 +79,39 @@ function hexVertices(basis, hexPoint) {
     })
 }
 
+function adjacentHexes(p) {
+    return [
+        { coord: upRight(p),   position: "upRight" },
+        { coord: downRight(p), position: "downRight" },
+        { coord: down(p),      position: "down" },
+        { coord: downLeft(p),  position: "downLeft" },
+        { coord: upLeft(p),    position: "upLeft" },
+        { coord: up(p),        position: "up" }
+    ]    
+}
+
+function upRight(p)   { return adjPt(p, 0,  1) }
+function downRight(p) { return adjPt(p, 1, -1) }
+function down(p)      { return adjPt(p, 1, -2) }
+function downLeft(p)  { return adjPt(p, 0, -1) }
+function upLeft(p)    { return adjPt(p, -1, 1) }
+function up(p)        { return adjPt(p, -1, 2) }
+
+function adjPt(point, deltaX, deltaY) {
+    return {x: point.x + deltaX, y: point.y + deltaY}
+}
+
 module.exports = {
     hexBasis: hexBasis,
     hexVertices: hexVertices,
     //cartesianToHexTransformer: cartesianToHexTransformer,
-    whichHex: whichHex
+    whichHex: whichHex,
+    adjacentHexes: adjacentHexes,
+
+    upRight: upRight,
+    downRight: downRight,
+    down: down,
+    downLeft: downLeft,
+    upLeft: upLeft,
+    up: up
 }

@@ -20,6 +20,11 @@ function removeHexFromPath(grid, pathsList, hexCoord) {
     return {grid:grid, pathsList:pathsList}
 }
 
+function hexPathInfo(grid, hexCoord) {
+    var name = hexName(hexCoord)
+    return grid[name]
+}
+
 function isHexInPath(grid, path, hexCoord) {
     var name = hexName(hexCoord) 
     if (!grid[name]) return false
@@ -49,5 +54,6 @@ module.exports = {
     newGrid: newGrid,
     addHexToPath: addHexToPath,
     removeHexFromPath: removeHexFromPath,
-    isHexInPath: isHexInPath
+    isHexInPath: isHexInPath,
+    hexPathInfo: hexPathInfo
 }
