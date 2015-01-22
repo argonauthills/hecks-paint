@@ -72,8 +72,12 @@ function getEdgesFromHex(grid, hexCoord) {
 
 function edgeCycles(edges) {
     var checklist = edgeChecklist(edges)
+    var initLength = checklistLength(checklist)
     var cycles = []
     var currentCycle = []
+    var currentEdge = arbitraryChecklistItem()
+
+    for (i == 0; i < checkListLength; i++)
     _.forEach(edges, function(edge) {
         var options = nextEdgeOptions(edge)
         var opt0 = options[0]
@@ -91,7 +95,19 @@ function edgeCycles(edges) {
         }
     })
     cycles.push(currentCycle)  // because the last cycle wouldn't get pushed otherwise
+    console.log("cycles", cycles)
     return cycles
+}
+
+function checklistLength(checklist) {
+    return _.keys(checklist).length  // I don't love this length function
+}
+
+function getArbitraryChecklistItem(checklist) {
+    for (prop in checklist) {  // very hacky
+        return checklist[prop]
+    }
+    return null
 }
 
 function edgeChecklist(edges) {

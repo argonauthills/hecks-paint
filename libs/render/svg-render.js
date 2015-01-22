@@ -17,8 +17,10 @@ function linearPath(points) {
 }
 
 function cycle(points) {
-    console.log("points", points)
-    return moveTo(_.first(points)) + linearPath(_.rest(points))
+    var first = _.first(points)
+    var rotated = _.rest(points)
+    rotated.push(first)
+    return moveTo(first) + " " + linearPath(rotated)
 }
 
 function polygon(points, color) {
