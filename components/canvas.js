@@ -23,6 +23,12 @@ document.body.onmouseup = function() {
 module.exports = function main (element, grid, basis, pathsList) {
     element.addEventListener("mousemove", mouseMoveHandler(element, grid, basis, pathsList))
     element.addEventListener("click", clickHandler(element, grid, basis, pathsList))
+
+    //TODO: hack : delete this:
+    var downloadAnchor = document.getElementById("downloader-anchor")
+    document.getElementById("downloader-preparer").addEventListener("click", function(event) {
+        svgHref(downloadAnchor, svgString(grid, basis))
+    })
 }
 
 
@@ -80,11 +86,38 @@ function mouseEventHexCoords(basis, event) {
 }
 
 function render(element, grid, basis) {
-    var html = _.map(grid, function(gNode) {
-        var points = hex.hexVertices(basis, gNode.coord)
-        return svgRender.polygon(points, gNode.path)
-    }).join(" ")
+    var html = svgString(grid, basis)
     element.innerHTML = html
 }
 
+//TODO: name better
+function svgString(grid, basis) {
+    return _.map(grid, function(gNode) {
+        var points = hex.hexVertices(basis, gNode.coord)
+        return svgRender.polygon(points, gNode.path)
+    }).join(" ")
+}
+
+
+//TODO: hack : delete this:
+function svgHref(anchor, svgString){
+    console.log("a", !!anchor, svgString)
+    anchor.setAttribute("download", "test.svg");    
+    var url = "data:image/svg+xml;utf8," + encodeURI(wrapSvg(svgString));
+    anchor.setAttribute("href", url);
+}
+
+function wrapSvg(contentString) {
+    // return '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"' +
+    // '"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">' +
+    // '<svg viewBox="-450 -450 900 900">' + contentString + "</svg>"
+
+    return '<?xml version="1.0" standalone="no"?> ' +
+        '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" ' +
+        '"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"> ' +
+        '<svg viewBox="-450 -450 900 900" version="1.1" ' +
+        'xmlns="http://www.w3.org/2000/svg"> ' +
+            contentString +
+        '</svg>'
+}
 

@@ -11,3 +11,5 @@ var pathsList = {}
 
 var canvas = require('./components/canvas')(document.getElementById("canvas"), grid, basis, pathsList)
 
+var downloader = require('./components/downloader')(document.getElementById("downloader"), grid, basis, pathsList)
+
