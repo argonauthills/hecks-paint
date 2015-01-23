@@ -18,6 +18,7 @@ var downloader = require('./components/downloader')(document.getElementById("dow
 var colors = require('./components/color-picker')(document.getElementById('color-picker'), pathSettings)
 var paths = require('./components/paths')(document.getElementById("path-list"), pathSettings)
 
+document.getElementById("heck-mode-button").addEventListener("click", function() {pLib.heckMode(pathSettings)})
 
 pLib.addSubscribedCallback(pathSettings, canvas.render)
 pLib.addSubscribedCallback(pathSettings, colors.render)

@@ -79,7 +79,7 @@ function path(fillColor, strokeColor, strokeWidth, renderFunc) {
         strokeColor: strokeColor || "black",
         strokeWidth: strokeWidth || 1,
         id: bm.randomId(),
-        pathRenderFunc: hexRender.heckRenderPath
+        pathRenderFunc: hexRender.normalRenderPath
     }
 }
 
@@ -100,5 +100,6 @@ module.exports =  {
     changeCurrentStroke: changeCurrentStroke,
     // changeFill: changeFill,
     // changeStroke: changeStroke,
-    defaultPathList: defaultPathList
+    defaultPathList: defaultPathList,
+    heckMode: heckMode
 }
