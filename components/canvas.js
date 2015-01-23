@@ -1,6 +1,7 @@
 var hex = require('../libs/math/hex')
 var basic = require('../libs/math/basic')
 var g = require('../libs/grid')
+var events = require('../libs/events')
 var pLib = require('../libs/path')
 var _ = require('lodash')
 var svgRender = require('../libs/render/svg-render')
@@ -27,9 +28,8 @@ module.exports = function main (element, grid, basis, pathSettings) {
         svgHref(downloadAnchor, svgString(grid, basis))
     })
 
-    return {
-        render: function() {render(element, grid, basis)}
-    }
+    events.pathAlteredListener(element, function() {render(element, grid, basis)})
+    
 }
 
 

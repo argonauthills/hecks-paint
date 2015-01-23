@@ -1,14 +1,13 @@
 var pLib = require('../libs/path')
+var events = require('../libs/events')
 
 module.exports = function main (element, pathSettings) {
     
     element.addEventListener("click", clickHandler(pathSettings))
 
-    render(element, pathSettings.paths, pathSettings.current)
+    events.pathAlteredListener(element, function() {render(element, pathSettings.paths, pathSettings.current)})
 
-    return {
-        render: function() {return render(element, pathSettings.paths, pathSettings.current)}
-    }
+    render(element, pathSettings.paths, pathSettings.current)
 
 }
 

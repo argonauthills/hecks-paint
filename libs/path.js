@@ -26,6 +26,14 @@ function setCurrentPath(pathList, path) {
     pathList.current = path
 }
 
+function changeCurrentFill(pathList, color) {
+    if (!!pathList.current) changeFill(pathList.current, color)
+}
+
+function changeCurrentStroke(pathList, color) {
+    if (!!pathList.current) changeStroke(pathList.current, color)
+}
+
 function getPath(pathList, id) {
     return _.find(pathList.paths, function(p) {return p.id == id})
 }
@@ -52,6 +60,8 @@ function changeStroke(path, color) {
 module.exports =  {
     getPath: getPath,
     setCurrentPath: setCurrentPath,
+    changeCurrentFill: changeCurrentFill,
+    changeCurrentStroke: changeCurrentStroke,
     changeFill: changeFill,
     changeStroke: changeStroke,
     defaultPathList: defaultPathList
