@@ -1,6 +1,8 @@
+var pLib = require('../libs/path')
+
 module.exports = function main (element, pathSettings) {
     
-    element.addEventListener("click", clickHandler)
+    element.addEventListener("click", clickHandler(pathSettings))
 
     render(element, pathSettings.paths, pathSettings.current)
 
@@ -16,11 +18,19 @@ function render(element, paths, currentPath) {
     element.innerHTML = html
 }
 
-function clickHandler() {}
+function clickHandler(pathSettings) {
+    return function (event) {
+        var id = event.target.value || event.target.parentElement.value || null
+        if (!!id) {
+            var path = pLib.getPath(pathSettings, id)
+            pLib.setCurrentPath(pathSettings, path)
+        }
+    }
+}
 
 function renderPath(path, isSelected) {
     var selectedClass = (isSelected) ? "path-box-selected" : ""
-    return  "<div class='path-box " + selectedClass + "'>" +
-                "<div class='path-sample' style='background-color:"+path.fillColor+"; border-color:"+path.strokeColor+"'></div>"+
-            "</div>"
+    return  "<button class='path-button " + selectedClass + "' value='"+path.id+"'>" +
+                "<div class='path-sample' pointer-events='none' style='background-color:"+path.fillColor+"; border-color:"+path.strokeColor+"'></div>"+
+            "</button>"
 }

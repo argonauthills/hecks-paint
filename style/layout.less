@@ -1,5 +1,9 @@
 @toolbar-width: 350px;
 
+body {
+    background-color: lightgray;
+}
+
 .toolbar {
     height: 100%;
     position: fixed;
@@ -24,14 +28,16 @@
     content: "";
 }
 
-.path-box {
+.path-button {
     border: 2px solid transparent;
     padding: 2px;
-    float:left;
+    outline: none;
+    background-color: transparent;
+    // float:left;
     height: 50px;
     width: 50px;
     &.path-box-selected {
-        border-color:yellow;
+        border-color:gold;
     }
 }
 
