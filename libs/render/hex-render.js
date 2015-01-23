@@ -124,16 +124,21 @@ function render(grid, basis) {
     console.log("groupedEdges", groupedEdges)
     return _.map(groupedEdges, function(edges) {
         var cycles = edgeCycles(edges)
-        return renderPath(basis, cycles)
+        var pathInfo = cycles[0][0].path  // every edge has this information; we just need it from one
+        var pathRenderFunc = pathInfo.pathRenderFunc
+        console.log("pathInfo", pathInfo)
+        return pathRenderFunc(basis, cycles, pathInfo)
     }).join(" ")   
 }
 
-function renderPath(basis, cycles) {
-    var pathInfo = cycles[0][0].path  // every edge has this information; we just need it from one
-    console.log("pathInfo", pathInfo)
+function normalRenderPath(basis, cycles, pathInfo) {
     return svgRender.path(_.map(cycles, function(cycle) {
         return cycleToD(basis, cycle)
     }).join(" "), pathInfo)
+}
+
+function heckRenderPath(basis, cycles, pathInfo) {
+    return svgRender.path(cycleToD(basis, _.flatten(cycles)), pathInfo)
 }
 
 function cycleToD(basis, cycle) {
@@ -166,5 +171,7 @@ function edgeName(hexCoord, position) { // position in relation to hex ("up", "d
 
 
 module.exports = {
-    render: render
+    render: render,
+    normalRenderPath: normalRenderPath,
+    heckRenderPath: heckRenderPath
 }

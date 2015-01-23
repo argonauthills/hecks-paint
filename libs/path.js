@@ -1,5 +1,6 @@
 var bm = require('./math/basic')
 var _ = require('lodash')
+var hexRender = require('./render/hex-render')
 
 var paths = [
     path("red"),
@@ -48,18 +49,37 @@ function changeCurrentStroke(pathList, color) {
     runSubscriptions(pathList)
 }
 
+function heckMode(pathList) {
+    return changeAllRenderFuncs(pathList, hexRender.heckRenderPath)
+}
+
+function changeAllRenderFuncs(pathList, func) {
+    pathList.paths.map(function(path) {
+        path.pathRenderFunc = func
+    })
+    runSubscriptions(pathList)
+}
+
+function changeCurrentRenderFunc(pathList, func) {
+    if (!!pathList.current) {
+        pathList.current.pathRenderFunc = func
+        runSubscriptions(pathList)
+    }
+}
+
 function getPath(pathList, id) {
     return _.find(pathList.paths, function(p) {return p.id == id})
 }
 
 // ACTIONS ON PATHS
 
-function path(fillColor, strokeColor, strokeWidth) {
+function path(fillColor, strokeColor, strokeWidth, renderFunc) {
     return {
         fillColor: fillColor || "black",
         strokeColor: strokeColor || "black",
         strokeWidth: strokeWidth || 1,
-        id: bm.randomId()
+        id: bm.randomId(),
+        pathRenderFunc: hexRender.heckRenderPath
     }
 }
 

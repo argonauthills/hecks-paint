@@ -1,5 +1,4 @@
 var pLib = require('../libs/path')
-var events = require('../libs/events')
 
 var rainbow = [
     color("#CC0E79"),
@@ -37,7 +36,6 @@ function clickHandler(element, pathSettings) {
         var hexValue = event.target.value || null
         if (!!hexValue) {
             pLib.changeCurrentFill(pathSettings, hexValue)
-            events.pathAltered(element)
         }
     }
 }
@@ -48,7 +46,6 @@ function contextmenuHandler(element, pathSettings) {
         var hexValue = event.target.value || null
         if (!!hexValue) {
             pLib.changeCurrentStroke(pathSettings, hexValue)
-            events.pathAltered(element)
         }
     }
 }
