@@ -28,8 +28,9 @@ module.exports = function main (element, grid, basis, pathSettings) {
         svgHref(downloadAnchor, svgString(grid, basis))
     })
 
-    events.pathAlteredListener(element, function() {render(element, grid, basis)})
-    
+    return {
+        render: function () { return render(element, grid, basis) }
+    }    
 }
 
 

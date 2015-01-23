@@ -17,3 +17,8 @@ var canvas = require('./components/canvas')(document.getElementById("canvas"), g
 var downloader = require('./components/downloader')(document.getElementById("downloader"), grid, basis, pathSettings)
 var colors = require('./components/color-picker')(document.getElementById('color-picker'), pathSettings)
 var paths = require('./components/paths')(document.getElementById("path-list"), pathSettings)
+
+
+pLib.addSubscribedCallback(pathSettings, canvas.render)
+pLib.addSubscribedCallback(pathSettings, colors.render)
+pLib.addSubscribedCallback(pathSettings, paths.render)

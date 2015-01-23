@@ -10,7 +10,8 @@ var paths = [
 function defaultPathList() {
     return {
         current: paths[0],
-        paths: paths
+        paths: paths,
+        subscribedCallbacks: []
     }
 }
 
@@ -19,19 +20,32 @@ function defaultPath() {
 }
 
 
+// SUBSCRIPTIONS
+
+function addSubscribedCallback(pathList, callback) {
+    pathList.subscribedCallbacks.push(callback)
+}
+
+function runSubscriptions(pathList) {
+    pathList.subscribedCallbacks.map(function(callback) {callback()})
+}
+
 // ACTIONS ON PATHLIST
 
 function setCurrentPath(pathList, path) {
     //var !!_.find(pathList.paths, function(p) { return p.id == path.id})  // do something to add paths we don't currently have in list
     pathList.current = path
+    runSubscriptions(pathList)
 }
 
 function changeCurrentFill(pathList, color) {
     if (!!pathList.current) changeFill(pathList.current, color)
+    runSubscriptions(pathList)
 }
 
 function changeCurrentStroke(pathList, color) {
     if (!!pathList.current) changeStroke(pathList.current, color)
+    runSubscriptions(pathList)
 }
 
 function getPath(pathList, id) {
@@ -58,11 +72,13 @@ function changeStroke(path, color) {
 }
 
 module.exports =  {
+    addSubscribedCallback: addSubscribedCallback,
+    runSubscriptions: runSubscriptions,
     getPath: getPath,
     setCurrentPath: setCurrentPath,
     changeCurrentFill: changeCurrentFill,
     changeCurrentStroke: changeCurrentStroke,
-    changeFill: changeFill,
-    changeStroke: changeStroke,
+    // changeFill: changeFill,
+    // changeStroke: changeStroke,
     defaultPathList: defaultPathList
 }

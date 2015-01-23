@@ -26,6 +26,10 @@ module.exports = function main (element, pathSettings) {
     render(element, null, palette)
     element.addEventListener("click", clickHandler(element, pathSettings))
     element.addEventListener("contextmenu", contextmenuHandler(element, pathSettings))
+
+    return {
+        render: function() { render(element, null, palette) }
+    }
 }
 
 function clickHandler(element, pathSettings) {
