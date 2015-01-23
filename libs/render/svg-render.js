@@ -28,7 +28,7 @@ function polygon(points, color) {
 }
 
 function path(d, pathInfo) {
-    return "<path pointer-events='none' fill-rule='evenodd' fill="+pathInfo.fillColor+" stroke="+pathInfo.strokeColor+" stroke-width="+pathInfo.strokeWidth+" d='"+ d +"'>"
+    return "<path pointer-events='none' fill-rule='evenodd' fill="+pathInfo.fillColor+" stroke="+pathInfo.strokeColor+" stroke-width="+pathInfo.strokeWidth+" d='"+ d +"'/>"
 }
 
 

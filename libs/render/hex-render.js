@@ -121,6 +121,7 @@ function nextEdgeOptions(edge) {  //TODO consider getting more of this info from
 
 function render(grid, basis) {
     var groupedEdges = edgesGroupedByPath(grid)
+    console.log("groupedEdges", groupedEdges)
     return _.map(groupedEdges, function(edges) {
         var cycles = edgeCycles(edges)
         return renderPath(basis, cycles)
@@ -129,6 +130,7 @@ function render(grid, basis) {
 
 function renderPath(basis, cycles) {
     var pathInfo = cycles[0][0].path  // every edge has this information; we just need it from one
+    console.log("pathInfo", pathInfo)
     return svgRender.path(_.map(cycles, function(cycle) {
         return cycleToD(basis, cycle)
     }).join(" "), pathInfo)

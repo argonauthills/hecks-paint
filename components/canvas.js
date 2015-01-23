@@ -9,7 +9,7 @@ var noQuery = require('../libs/no-query')
 
 var mouseDown = false;
 var previousMouseMoveCoords = null
-document.body.onmousedown = function() { 
+document.body.onmousedown = function() {   // TODO: make more robust
     mouseDown = true
 }
 document.body.onmouseup = function() {
@@ -34,6 +34,7 @@ function clickHandler(element, grid, basis, pathSettings) {
         var hexCoords = mouseEventHexCoords(basis, event)
         g.addHexToPath(grid, pathSettings.current, hexCoords)
         render(element, grid, basis)
+        console.log("grid", grid)
     }
 }
 
