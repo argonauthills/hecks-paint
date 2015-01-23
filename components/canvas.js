@@ -1,15 +1,13 @@
 var hex = require('../libs/math/hex')
 var basic = require('../libs/math/basic')
 var g = require('../libs/grid')
+var pLib = require('../libs/path')
 var _ = require('lodash')
 var svgRender = require('../libs/render/svg-render')
 var hexRender = require('../libs/render/hex-render')
 var noQuery = require('../libs/no-query')
 
-var pathDetails = {
-    color: "black",
-    id: "asdf",
-}
+var pathDetails = pLib.defaultPath()
 
 var mouseDown = false;
 var previousMouseMoveCoords = null

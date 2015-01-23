@@ -62,10 +62,20 @@ function lerp(start, end, t) {
     return start + t * (end-start);
 }
 
+
+function randomId() {
+    var id = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    for( var i=0; i < 10; i++ ) id += possible.charAt(Math.floor(Math.random() * possible.length));
+    return id;
+}
+
 module.exports = {
     euclideanModulus: euclideanModulus,
     line: line,
     pythagorean: pythagorean,
     walkLine: walkLine,
-    interpolatedSegment: interpolatedSegment
+    interpolatedSegment: interpolatedSegment,
+    randomId: randomId
 }

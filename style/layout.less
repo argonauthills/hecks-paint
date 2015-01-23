@@ -18,3 +18,29 @@
     height: 900px;
     background-color: grey;
 }
+
+.path-list:after {
+    clear:both;
+    content: "";
+}
+
+.path-box {
+    border: 2px solid transparent;
+    padding: 2px;
+    float:left;
+    height: 50px;
+    width: 50px;
+    &.path-box-selected {
+        border-color:yellow;
+    }
+}
+
+.path-sample {
+    border: 3px solid;
+    height: 100%;
+    width: 100%;
+}
+
+.clearfix {
+    clear:both;
+}
