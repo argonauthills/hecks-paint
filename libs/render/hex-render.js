@@ -76,6 +76,30 @@ function edgeCycles(edges) {
     return cycles
 }
 
+function heckEdgeCycles(edges) {  // buggy code; makes great glitch art.
+    var checklist = edgeChecklist(edges)
+    var cycles = []
+    var currentCycle = []
+    _.forEach(edges, function(edge) {
+        var options = nextEdgeOptions(edge)
+        var opt0 = options[0]
+        var opt1 = options[1]
+
+        if (isInChecklist(checklist, opt0)) {
+            currentCycle.push(checklist[opt0])
+            removeFromChecklist(checklist, opt0)
+        } else if (isInChecklist(checklist, opt1)) {
+            currentCycle.push(checklist[opt1])
+            removeFromChecklist(checklist, opt1)
+        } else {
+            cycles.push(currentCycle)
+            currentCycle = []
+        }
+    })
+    cycles.push(currentCycle)  // because the last cycle wouldn't get pushed otherwise
+    return cycles
+}
+
 function checklistLength(checklist) {
     return _.keys(checklist).length  // I don't love this length function
 }
@@ -123,8 +147,8 @@ function render(grid, basis) {
     var groupedEdges = edgesGroupedByPath(grid)
     console.log("groupedEdges", groupedEdges)
     return _.map(groupedEdges, function(edges) {
-        var cycles = edgeCycles(edges)
-        var pathInfo = cycles[0][0].path  // every edge has this information; we just need it from one
+        var pathInfo = edges[0].path // every edge has this information; we just need it from one
+        var cycles = (pathInfo.heckMode) ? heckEdgeCycles(edges) : edgeCycles(edges)
         var pathRenderFunc = pathInfo.pathRenderFunc
         console.log("pathInfo", pathInfo)
         return pathRenderFunc(basis, cycles, pathInfo)
@@ -138,7 +162,8 @@ function normalRenderPath(basis, cycles, pathInfo) {
 }
 
 function heckRenderPath(basis, cycles, pathInfo) {
-    return svgRender.path(cycleToD(basis, _.flatten(cycles)), pathInfo)
+    var adjustedCycles = _.flatten(cycles)
+    return svgRender.path(cycleToD(basis, adjustedCycles), pathInfo)
 }
 
 function cycleToD(basis, cycle) {

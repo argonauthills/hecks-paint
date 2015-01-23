@@ -5,7 +5,10 @@ var hexRender = require('./render/hex-render')
 var paths = [
     path("red"),
     path("orange", "red"),
-    path("yellow")
+    path("yellow"),
+    path(),
+    path(),
+    path()
 ]
 
 function defaultPathList() {
@@ -39,6 +42,11 @@ function setCurrentPath(pathList, path) {
     runSubscriptions(pathList)
 }
 
+function addPath(pathList) {
+    pathList.paths.push(path("black", "black"))
+    runSubscriptions(pathList)
+}
+
 function changeCurrentFill(pathList, color) {
     if (!!pathList.current) changeFill(pathList.current, color)
     runSubscriptions(pathList)
@@ -50,7 +58,8 @@ function changeCurrentStroke(pathList, color) {
 }
 
 function heckMode(pathList) {
-    return changeAllRenderFuncs(pathList, hexRender.heckRenderPath)
+    pathList.paths.map(function(path) { path.heckMode = true})
+    changeAllRenderFuncs(pathList, hexRender.heckRenderPath)
 }
 
 function changeAllRenderFuncs(pathList, func) {
@@ -79,7 +88,8 @@ function path(fillColor, strokeColor, strokeWidth, renderFunc) {
         strokeColor: strokeColor || "black",
         strokeWidth: strokeWidth || 1,
         id: bm.randomId(),
-        pathRenderFunc: hexRender.normalRenderPath
+        pathRenderFunc: hexRender.normalRenderPath,
+        heckMode: false
     }
 }
 
@@ -92,6 +102,7 @@ function changeStroke(path, color) {
 }
 
 module.exports =  {
+    addPath: addPath,
     addSubscribedCallback: addSubscribedCallback,
     runSubscriptions: runSubscriptions,
     getPath: getPath,
