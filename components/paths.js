@@ -6,6 +6,10 @@ module.exports = function main (element, pathSettings) {
 
     render(element, pathSettings.paths, pathSettings.current)
 
+    return {
+        render: function() {return render(element, pathSettings.paths, pathSettings.current)}
+    }
+
 }
 
 function render(element, paths, currentPath) {

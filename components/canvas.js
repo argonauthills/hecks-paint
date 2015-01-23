@@ -26,6 +26,10 @@ module.exports = function main (element, grid, basis, pathSettings) {
     document.getElementById("downloader-preparer").addEventListener("click", function(event) {
         svgHref(downloadAnchor, svgString(grid, basis))
     })
+
+    return {
+        render: function() {render(element, grid, basis)}
+    }
 }
 
 

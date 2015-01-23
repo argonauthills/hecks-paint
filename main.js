@@ -18,3 +18,9 @@ var downloader = require('./components/downloader')(document.getElementById("dow
 
 var paths = require('./components/paths')(document.getElementById("path-list"), pathSettings)
 
+
+
+Object.observe(pathSettings, function() {
+    paths.render()
+    canvas.render()
+}) 
