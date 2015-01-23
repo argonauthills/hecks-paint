@@ -27,8 +27,8 @@ function polygon(points, color) {
     return "<polygon pointer-events='none' points='"+svgPoints(points)+"' style='black'/>"
 }
 
-function path(d) {
-    return "<path pointer-events='none' fill-rule='evenodd' d='"+ d +"'>"
+function path(d, pathInfo) {
+    return "<path pointer-events='none' fill-rule='evenodd' fill="+pathInfo.fillColor+" stroke="+pathInfo.strokeColor+" stroke-width="+pathInfo.strokeWidth+" d='"+ d +"'>"
 }
 
 

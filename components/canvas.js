@@ -7,8 +7,6 @@ var svgRender = require('../libs/render/svg-render')
 var hexRender = require('../libs/render/hex-render')
 var noQuery = require('../libs/no-query')
 
-var pathDetails = pLib.defaultPath()
-
 var mouseDown = false;
 var previousMouseMoveCoords = null
 document.body.onmousedown = function() { 
@@ -19,9 +17,9 @@ document.body.onmouseup = function() {
     previousMouseMoveCoords = null
 }
 
-module.exports = function main (element, grid, basis, pathsList) {
-    element.addEventListener("mousemove", mouseMoveHandler(element, grid, basis, pathsList))
-    element.addEventListener("click", clickHandler(element, grid, basis, pathsList))
+module.exports = function main (element, grid, basis, pathSettings) {
+    element.addEventListener("mousemove", mouseMoveHandler(element, grid, basis, pathSettings))
+    element.addEventListener("click", clickHandler(element, grid, basis, pathSettings))
 
     //TODO: hack : delete this:
     var downloadAnchor = document.getElementById("downloader-anchor")
@@ -31,28 +29,28 @@ module.exports = function main (element, grid, basis, pathsList) {
 }
 
 
-function clickHandler(element, grid, basis, pathsList) {
+function clickHandler(element, grid, basis, pathSettings) {
     return function (event) {
         var hexCoords = mouseEventHexCoords(basis, event)
-        g.addHexToPath(grid, pathsList, pathDetails, hexCoords)
+        g.addHexToPath(grid, pathSettings.current, hexCoords)
         render(element, grid, basis)
     }
 }
 
-function mouseMoveHandler(element, grid, basis, pathsList) {
+function mouseMoveHandler(element, grid, basis, pathSettings) {
     return function (event) {
         if (!mouseDown) return
         else {
             var mouseCoords = mouseEventCoords(event)
             var hexCoords = mouseEventHexCoords(basis, event)
-            if (g.isHexInPath(grid, pathDetails, hexCoords)) return 
+            if (g.isHexInPath(grid, pathSettings.current, hexCoords)) return 
             else if (!previousMouseMoveCoords) {
-                g.addHexToPath(grid, pathsList, pathDetails, hexCoords)
+                g.addHexToPath(grid, pathSettings.current, hexCoords)
                 render(element, grid, basis)
                 previousMouseMoveCoords = mouseCoords
             }
             else {
-                addLineOfHexes(grid, pathsList, pathDetails, basis, previousMouseMoveCoords, mouseCoords)
+                addLineOfHexes(grid, pathSettings.current, basis, previousMouseMoveCoords, mouseCoords)
                 render(element, grid, basis)
                 previousMouseMoveCoords = mouseCoords
             }
@@ -61,12 +59,12 @@ function mouseMoveHandler(element, grid, basis, pathsList) {
     }
 }
 
-function addLineOfHexes(grid, pathsList, pathDetails, basis, initialCoords, finalCoords) {
+function addLineOfHexes(grid, path, basis, initialCoords, finalCoords) {
     var numPoints = basic.pythagorean(basis.v1.x, basis.v1.y)  //TODO: better interpolation estimate
     var coords = basic.interpolatedSegment(initialCoords, finalCoords, numPoints)
     coords.map(function(coord) {
         var c = hex.whichHex(basis, coord)
-        g.addHexToPath(grid, pathsList, pathDetails, c)
+        g.addHexToPath(grid, path, c)
     })
 }
 

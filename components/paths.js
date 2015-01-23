@@ -1,14 +1,8 @@
-var pLib = require('../libs/path')
-
-var paths = [pLib.defaultPath(), pLib.defaultPath()]
-pLib.changeFill(paths[0], "red")
-console.log(paths[0])
-
-module.exports = function main (element, children, pathsHolder) {
+module.exports = function main (element, pathSettings) {
     
     element.addEventListener("click", clickHandler)
 
-    render(element, paths, paths[1])
+    render(element, pathSettings.paths, pathSettings.current)
 
 }
 
@@ -18,8 +12,6 @@ function render(element, paths, currentPath) {
         isSelected = path.id == currentPath.id
         return renderPath(path, isSelected)
     }).join(" ")
-
-    console.log("html", html, "el", element)
 
     element.innerHTML = html
 }

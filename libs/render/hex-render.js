@@ -128,9 +128,10 @@ function render(grid, basis) {
 }
 
 function renderPath(basis, cycles) {
+    var pathInfo = cycles[0][0].path  // every edge has this information; we just need it from one
     return svgRender.path(_.map(cycles, function(cycle) {
         return cycleToD(basis, cycle)
-    }).join(" "))
+    }).join(" "), pathInfo)
 }
 
 function cycleToD(basis, cycle) {

@@ -1,5 +1,6 @@
 var alg = require('./libs/math/linear-algebra')
 var hex = require('./libs/math/hex')
+var pLib = require('./libs/path')
 
 var basis = hex.hexBasis(
     alg.vScalarMult({x:20, y:0}, 2),
@@ -7,11 +8,13 @@ var basis = hex.hexBasis(
 )
 
 var grid = require('./libs/grid').newGrid()
-var pathsList = {}
 
-var canvas = require('./components/canvas')(document.getElementById("canvas"), grid, basis, pathsList)
+var pathSettings = pLib.defaultPathList()
 
-var downloader = require('./components/downloader')(document.getElementById("downloader"), grid, basis, pathsList)
 
-var paths = require('./components/paths')(document.getElementById("path-list"), null)
+var canvas = require('./components/canvas')(document.getElementById("canvas"), grid, basis, pathSettings)
+
+var downloader = require('./components/downloader')(document.getElementById("downloader"), grid, basis, pathSettings)
+
+var paths = require('./components/paths')(document.getElementById("path-list"), pathSettings)
 

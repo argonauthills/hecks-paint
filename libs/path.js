@@ -1,10 +1,27 @@
 var bm = require('./math/basic')
 
-function defaultPath() {
+var paths = [
+    path("red"),
+    path("orange"),
+    path("yellow")
+]
+
+function defaultPathList() {
     return {
-        fillColor: "black",
-        strokeColor: "black",
-        strokeWidth: 1,
+        current: paths[0],
+        paths: paths
+    }
+}
+
+function defaultPath() {
+    return path()
+}
+
+function path(fillColor, strokeColor, strokeWidth) {
+    return {
+        fillColor: fillColor || "black",
+        strokeColor: strokeColor || "black",
+        strokeWidth: strokeWidth || 1,
         id: bm.randomId()
     }
 }
@@ -18,7 +35,7 @@ function changeStroke(path, color) {
 }
 
 module.exports =  {
-    defaultPath: defaultPath,
     changeFill: changeFill,
-    changeStroke: changeStroke
+    changeStroke: changeStroke,
+    defaultPathList: defaultPathList
 }
