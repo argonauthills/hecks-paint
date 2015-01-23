@@ -15,6 +15,11 @@ var pathSettings = pLib.defaultPathList()
 var canvas = require('./components/canvas')(document.getElementById("canvas"), grid, basis, pathSettings)
 
 var downloader = require('./components/downloader')(document.getElementById("downloader"), grid, basis, pathSettings)
-
+var colors = require('./components/color-picker')(document.getElementById('color-picker'), pathSettings)
 var paths = require('./components/paths')(document.getElementById("path-list"), pathSettings)
 
+document.getElementById("heck-mode-button").addEventListener("click", function() {pLib.heckMode(pathSettings)})
+
+pLib.addSubscribedCallback(pathSettings, canvas.render)
+pLib.addSubscribedCallback(pathSettings, colors.render)
+pLib.addSubscribedCallback(pathSettings, paths.render)

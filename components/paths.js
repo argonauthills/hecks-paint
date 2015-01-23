@@ -3,8 +3,11 @@ var pLib = require('../libs/path')
 module.exports = function main (element, pathSettings) {
     
     element.addEventListener("click", clickHandler(pathSettings))
-
     render(element, pathSettings.paths, pathSettings.current)
+
+    return {
+        render: function() { render(element, pathSettings.paths, pathSettings.current) }
+    }
 
 }
 

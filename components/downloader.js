@@ -1,5 +1,3 @@
-
-
 module.exports = function(element, grid, basis, pathsList) {
     element
 }
