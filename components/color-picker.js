@@ -1,4 +1,5 @@
 var pLib = require('../libs/path')
+var cLib = require('../libs/colors')
 
 var rainbow = [
     color("#CC0E79"),
@@ -17,7 +18,7 @@ var rainbow = [
 
 var palette = {
     name: "Heck Fire",
-    colors: rainbow
+    colors: cLib.palette//rainbow
 }
 
 

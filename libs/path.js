@@ -1,14 +1,21 @@
 var bm = require('./math/basic')
 var _ = require('lodash')
 var hexRender = require('./render/hex-render')
+var cLib = require('./colors')
 
 var paths = [
-    path("red"),
-    path("orange", "red"),
-    path("yellow"),
-    path(),
-    path(),
-    path()
+    randomPath(),
+    randomPath(),
+    randomPath(),
+    randomPath(),
+    randomPath(),
+    randomPath(),
+    randomPath(),
+    randomPath(),
+    randomPath(),
+    randomPath(),
+    randomPath(),
+    randomPath(),
 ]
 
 function defaultPathList() {
@@ -91,6 +98,10 @@ function path(fillColor, strokeColor, strokeWidth, renderFunc) {
         pathRenderFunc: hexRender.normalRenderPath,
         heckMode: false
     }
+}
+
+function randomPath() {
+    return path(cLib.randomColor(), cLib.randomColor())
 }
 
 function changeFill(path, color) {

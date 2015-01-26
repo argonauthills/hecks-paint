@@ -7,17 +7,21 @@ var svgRender = require('../libs/render/svg-render')
 var hexRender = require('../libs/render/hex-render')
 var noQuery = require('../libs/no-query')
 
+
 var mouseDown = false;
 var previousMouseMoveCoords = null
-document.body.onmousedown = function() {   // TODO: make more robust
-    mouseDown = true
-}
-document.body.onmouseup = function() {
-    mouseDown = false
-    previousMouseMoveCoords = null
-}
 
 module.exports = function main (element, grid, basis, pathSettings) {
+
+    element.onmousedown = function() {   // TODO: make more robust
+        mouseDown = true
+    }
+    document.body.onmouseup = function() {
+        mouseDown = false
+        previousMouseMoveCoords = null
+    }
+
+
     element.addEventListener("mousemove", mouseMoveHandler(element, grid, basis, pathSettings))
     element.addEventListener("click", clickHandler(element, grid, basis, pathSettings))
 
