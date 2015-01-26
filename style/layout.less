@@ -1,7 +1,19 @@
+@import "./colors.less";
+
 @toolbar-width: 350px;
 
 body {
-    background-color: lightgray;
+    background-color: @background;
+}
+
+button {
+    border-width: 0;
+    margin: 2px 0px;
+}
+
+.main {
+    // width: 1024px;
+    // margin: auto;
 }
 
 .toolbar {
@@ -26,7 +38,7 @@ body {
 .canvas {
     width: 900px;
     height: 900px;
-    background-color: grey;
+    background-color: @canvas-background;
 }
 
 .path-list:after {

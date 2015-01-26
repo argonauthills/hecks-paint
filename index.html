@@ -1,33 +1,35 @@
 <html>
     <head></head>
     <body>
-        <aside class="toolbar">
-            <header>Heck's Paint</header>
+        <section class="main">
+            <aside class="toolbar">
+                <header>Heck's Paint</header>
 
-            <header>Paths</header>
-            <section id="path-list"></section>
-            <div class="clearfix"></div>
+                <header>Paths</header>
+                <section id="path-list"></section>
+                <div class="clearfix"></div>
 
-            <section class="bottom-toolbar">
-                <header>Colors <small>(left click for fill; right click for stroke)</small></header>
-                <section id="color-picker"></section>
-                <section class="clearfix">
-                    <button id="downloader-preparer">Prepare</button>
-                    <a id="downloader-anchor">Download</a>
+                <section class="bottom-toolbar">
+                    <header>Colors <small>(left click for fill; right click for stroke)</small></header>
+                    <section id="color-picker"></section>
+                    <section class="clearfix">
+                        <button id="downloader-preparer">Prepare</button>
+                        <a id="downloader-anchor">Download</a>
+                    </section>
+
+                    <section>
+                        <button id="heck-mode-button">Break Heck Loose!</button>
+                    </section>
                 </section>
+            </aside>
 
-                <section>
-                    <button id="heck-mode-button">Break Heck Loose!</button>
-                </section>
+            <section class="canvas-container">
+                <svg viewBox="-450 -450 900 900" id="canvas" class="canvas">
+
+                </svg>
             </section>
-        </aside>
 
-        <section class="canvas-container">
-            <svg viewBox="-450 -450 900 900" id="canvas" class="canvas">
-
-            </svg>
         </section>
-
 
 
         <script type="text/javascript" src="./dist/bundle.js"></script>
