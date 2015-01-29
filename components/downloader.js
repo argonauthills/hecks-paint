@@ -1,5 +1,6 @@
 module.exports = function(element, grid, basis, pathsList) {
     element
+    
 }
 
 function svgHref(svgString){

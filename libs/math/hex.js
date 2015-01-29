@@ -105,6 +105,26 @@ function adjPt(point, deltaX, deltaY) {
     return {x: point.x + deltaX, y: point.y + deltaY}
 }
 
+
+// elbow math 
+
+/*  Given two hexes inset in our hex lattice by innerHexScale, we draw two lines from the center of hex A 
+ *  through the closest edge of hex B; this gives us a segment, scaled down from the edges of the outer hexes 
+ *  in our lattice by outerElbowScale.  These lines also pass through the edge of hex A closest to hex B. 
+ *  We wish to find how much this segment is scaled down from the inner hex edge length.
+ */
+function innerElbowScale(outerElbowScale, innerHexScale) {
+    return outerElbowScale / (2 - innerHexScale)
+}
+
+
+/* Given a segment, find the colinear segment scaled by finalScale which shares its midpoint with the original segment. */
+function shrinkSegment(point1, point2, finalScale) {
+    var scale = (1 - finalScale) / 2
+    var direction = alg.vScalarMult(alg.vSubtract(point2, point1), scale)
+    return [alg.vAdd(point1, direction), alg.vSubtract(point2, direction)]
+}
+
 module.exports = {
     hexBasis: hexBasis,
     hexVertices: hexVertices,
@@ -117,5 +137,8 @@ module.exports = {
     down: down,
     downLeft: downLeft,
     upLeft: upLeft,
-    up: up
+    up: up,
+
+    innerElbowScale: innerElbowScale,
+    shrinkSegment: shrinkSegment,
 }

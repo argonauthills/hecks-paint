@@ -4,7 +4,7 @@
   "description": "A hexagonal paint program",
   "main": "bundle.js",
   "dependencies": {
-    "lodash": "^2.4.1"
+    "lodash": "^3.0.0"
   },
   "devDependencies": {
     "css-loader": "^0.9.1",

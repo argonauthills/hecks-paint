@@ -7,8 +7,8 @@ var pLib = require('./libs/path')
 ///////////////////
 
 var basis = hex.hexBasis(
-    alg.vScalarMult({x:20, y:0}, 2),
-    alg.vScalarMult({x:10, y:6}, 2)
+    alg.vScalarMult({x:6, y:0}, 6),
+    alg.vScalarMult({x:3, y:Math.sqrt(3)}, 6)
 )
 
 var grid = require('./libs/grid').newGrid()

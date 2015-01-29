@@ -16,6 +16,10 @@ function linearPath(points) {
     return "L" + svgPoints(points)
 }
 
+function quadraticBezier(control, endpoint) {
+    return "B" + svgPoint(control) + " " + svgPoint(endpoint)
+}
+
 function cycle(points) {
     var first = _.first(points)
     var rotated = _.rest(points)
@@ -37,5 +41,6 @@ module.exports = {
     svgPoints: svgPoints,
     polygon: polygon,
     path: path,
-    cycle: cycle
+    cycle: cycle,
+    quadraticBezier: quadraticBezier,
 }

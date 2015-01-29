@@ -104,6 +104,7 @@ function path(fillColor, strokeColor, strokeWidth, renderFunc, innerScale) {
         innerScale: .5,//.93,
         id: bm.randomId(),
         pathRenderFunc: hexRender.normalRenderPath,
+        renderFunc: hexRender.normalRender,  
         heckMode: false
     }
 }

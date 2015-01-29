@@ -2,6 +2,7 @@ var hm = require('../math/hex')
 var g = require('../grid')
 var _ = require('lodash')
 var svgRender = require('./svg-render')
+var modash = require('../modash')
 
 // GET EDGES, COLLECT BY PATH
 
@@ -153,6 +154,7 @@ function render(grid, basis) {
     }).join(" ")   
 }
 
+// path renders
 function normalRenderPath(basis, cycles, pathInfo) {
     return svgRender.path(_.map(cycles, function(cycle) {
         return cycleToD(basis, cycle)
@@ -163,6 +165,35 @@ function heckRenderPath(basis, cycles, pathInfo) {
     var adjustedCycles = _.flatten(cycles)
     return svgRender.path(cycleToD(basis, adjustedCycles), pathInfo)
 }
+
+function curvedRenderPath(basis, cycles, pathInfo) {
+    _.map(cycles, function(cycle) {
+        var corners = _.zip(cycle, modash.rotated(cycle))
+        return _.map(corners, function(corner) {
+            return cornerToPathSpline(corner)
+        })
+    })
+}
+
+function cornerToPathSpline(corner) {
+    if (edgesOnSameHex(corner)) return innerElbowSpline(corner)
+    else return outerElbowSpline(corner)
+}
+
+function innerElbowSpline(corner) {
+
+}
+
+function outerElbowSpline(corner) {
+
+}
+
+function edgesOnSameHex(corner) {
+    var hex0 = corner[0].hexCoord
+    var hex1 = corner[1].hexCoord
+    return hex0.x == hex1.x && hex0.y == hex1.y
+}
+
 
 function cycleToD(basis, cycle) {
     var points = _.reduce(cycle, function(acc, edge) {  // TODO: handle cycle endpoints well.
@@ -190,8 +221,6 @@ function edgeToPoints(basis, edge) {
 function edgeName(hexCoord, position) { // position in relation to hex ("up", "downLeft", etc.)
     return "edge_"+hexCoord.x+"_"+hexCoord.y+"_pos_"+position
 }
-
-
 
 module.exports = {
     render: render,
