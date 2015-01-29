@@ -99,9 +99,6 @@ function color(hexValue, alias) {
 
 function randomColor() {
    var index = Math.floor(Math.random() * colors.length)
-   console.log("index", index)
-   console.log("colors.index", colors[index])
-   console.log("colors", colors)
    return colors[index]
 }
 

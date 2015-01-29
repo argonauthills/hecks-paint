@@ -569,7 +569,6 @@
 	        var hexCoords = mouseEventHexCoords(basis, event)
 	        g.addHexToPath(grid, pathSettings.current, hexCoords)
 	        render(element, grid, basis)
-	        console.log("grid", grid)
 	    }
 	}
 
@@ -1215,12 +1214,10 @@
 
 	function render(grid, basis) {
 	    var groupedEdges = edgesGroupedByPath(grid)
-	    console.log("groupedEdges", groupedEdges)
 	    return _.map(groupedEdges, function(edges) {
 	        var pathInfo = edges[0].path // every edge has this information; we just need it from one
 	        var cycles = (pathInfo.heckMode) ? heckEdgeCycles(edges) : edgeCycles(edges)
 	        var pathRenderFunc = pathInfo.pathRenderFunc
-	        console.log("pathInfo", pathInfo)
 	        return pathRenderFunc(basis, cycles, pathInfo)
 	    }).join(" ")   
 	}
@@ -1376,9 +1373,6 @@
 
 	function randomColor() {
 	   var index = Math.floor(Math.random() * colors.length)
-	   console.log("index", index)
-	   console.log("colors.index", colors[index])
-	   console.log("colors", colors)
 	   return colors[index]
 	}
 

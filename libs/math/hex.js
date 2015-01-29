@@ -12,6 +12,10 @@ function hexBasis(v1, v2) {
     return {v1: v1, v2: v2}
 }
 
+function scaleBasis(basis, scalar) {
+    return {v1: alg.vScalarMult(basis.v1, scalar), v2: alg.vScalarMult(basis.v2, scalar)}
+}
+
 function hexToCartesianMatrix(basis) {
     return alg.vectorsToMatrix(basis.v1, basis.v2)
 }
@@ -71,9 +75,10 @@ function hexVerticesCenteredOnOrigin(basis) { //in screen coordinates
     return [up, out, down, alg.vInverse(up), alg.vInverse(out), alg.vInverse(down)]
 }
 
-function hexVertices(basis, hexPoint) {
+function hexVertices(basis, hexPoint, innerScale) {
+    var innerBasis = (!!innerScale) ? scaleBasis(basis, innerScale) : basis
     var translation = hexToCartesianTransformer(basis)(hexPoint)
-    return hexVerticesCenteredOnOrigin(basis).map(function (v) {
+    return hexVerticesCenteredOnOrigin(innerBasis).map(function (v) {
        return alg.vAdd(v, translation) 
     })
 }

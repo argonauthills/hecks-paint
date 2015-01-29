@@ -145,12 +145,10 @@ function nextEdgeOptions(edge) {  //TODO consider getting more of this info from
 
 function render(grid, basis) {
     var groupedEdges = edgesGroupedByPath(grid)
-    console.log("groupedEdges", groupedEdges)
     return _.map(groupedEdges, function(edges) {
         var pathInfo = edges[0].path // every edge has this information; we just need it from one
         var cycles = (pathInfo.heckMode) ? heckEdgeCycles(edges) : edgeCycles(edges)
         var pathRenderFunc = pathInfo.pathRenderFunc
-        console.log("pathInfo", pathInfo)
         return pathRenderFunc(basis, cycles, pathInfo)
     }).join(" ")   
 }
@@ -175,7 +173,7 @@ function cycleToD(basis, cycle) {
 
 function edgeToPoints(basis, edge) {
     //TODO: change this to be more flexible
-    var vs = hm.hexVertices(basis, edge.owner)
+    var vs = hm.hexVertices(basis, edge.owner, edge.path.innerScale)
     switch (edge.position) {
         case "upRight":   return [vs[0], vs[1]]  // TODO: give these names.
         case "downRight": return [vs[1], vs[2]]
