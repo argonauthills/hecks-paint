@@ -65,7 +65,7 @@ function render(element, grid, basis) {
 //TODO: name better
 function svgString(grid, basis) {
     return _.map(grid, function(gNode) {
-        var points = hex.hexVertices(basis, gNode.coord)
+        var points = hex.hexVertices(basis, gNode.coord, gNode.path.innerScale)
         return svgRender.polygon(points, gNode.path)
     }).join(" ")
 }

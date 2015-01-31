@@ -18,7 +18,7 @@ var paths = [
     randomPath(),
 ]
 
-function defaultPathList() {
+function defaultPathList(basis) {
     return {
         current: paths[0],
         paths: paths,
@@ -26,7 +26,9 @@ function defaultPathList() {
     }
 }
 
-function defaultPath() {
+function defaultPath(basis) {
+    var strokeWidth = 2
+    var hexRadius = bm.pythagorean(basis.v1.x, basis.v1.y)/3
     return path()
 }
 
@@ -64,6 +66,11 @@ function changeCurrentStroke(pathList, color) {
     runSubscriptions(pathList)
 }
 
+function changeCurrentStrokeWidth(pathList, color) {
+    if (!!pathList.current) changeStrokeWidth(pathList.current, color)
+    runSubscriptions(pathList)
+}
+
 function heckMode(pathList) {
     pathList.paths.map(function(path) { path.heckMode = true})
     changeAllRenderFuncs(pathList, hexRender.heckRenderPath)
@@ -89,13 +96,15 @@ function getPath(pathList, id) {
 
 // ACTIONS ON PATHS
 
-function path(fillColor, strokeColor, strokeWidth, renderFunc) {
+function path(fillColor, strokeColor, strokeWidth, renderFunc, innerScale) {
     return {
         fillColor: fillColor || "black",
         strokeColor: strokeColor || "black",
-        strokeWidth: strokeWidth || 1,
+        strokeWidth: strokeWidth || 2,
+        innerScale: .5,//.93,
         id: bm.randomId(),
         pathRenderFunc: hexRender.normalRenderPath,
+        renderFunc: hexRender.normalRender,  
         heckMode: false
     }
 }
@@ -112,6 +121,11 @@ function changeStroke(path, color) {
     path.strokeColor = color
 }
 
+function changeStrokeWidth(path, width) {
+    console.log("changeStrokeWidth")
+    path.strokeWidth = width
+}
+
 module.exports =  {
     addPath: addPath,
     addSubscribedCallback: addSubscribedCallback,
@@ -120,6 +134,7 @@ module.exports =  {
     setCurrentPath: setCurrentPath,
     changeCurrentFill: changeCurrentFill,
     changeCurrentStroke: changeCurrentStroke,
+    changeCurrentStrokeWidth: changeCurrentStrokeWidth,
     // changeFill: changeFill,
     // changeStroke: changeStroke,
     defaultPathList: defaultPathList,

@@ -2,6 +2,7 @@ var hm = require('../math/hex')
 var g = require('../grid')
 var _ = require('lodash')
 var svgRender = require('./svg-render')
+var modash = require('../modash')
 
 // GET EDGES, COLLECT BY PATH
 
@@ -145,16 +146,15 @@ function nextEdgeOptions(edge) {  //TODO consider getting more of this info from
 
 function render(grid, basis) {
     var groupedEdges = edgesGroupedByPath(grid)
-    console.log("groupedEdges", groupedEdges)
     return _.map(groupedEdges, function(edges) {
         var pathInfo = edges[0].path // every edge has this information; we just need it from one
         var cycles = (pathInfo.heckMode) ? heckEdgeCycles(edges) : edgeCycles(edges)
         var pathRenderFunc = pathInfo.pathRenderFunc
-        console.log("pathInfo", pathInfo)
         return pathRenderFunc(basis, cycles, pathInfo)
     }).join(" ")   
 }
 
+// path renders
 function normalRenderPath(basis, cycles, pathInfo) {
     return svgRender.path(_.map(cycles, function(cycle) {
         return cycleToD(basis, cycle)
@@ -166,6 +166,35 @@ function heckRenderPath(basis, cycles, pathInfo) {
     return svgRender.path(cycleToD(basis, adjustedCycles), pathInfo)
 }
 
+function curvedRenderPath(basis, cycles, pathInfo) {
+    _.map(cycles, function(cycle) {
+        var corners = _.zip(cycle, modash.rotated(cycle))
+        return _.map(corners, function(corner) {
+            return cornerToPathSpline(corner)
+        })
+    })
+}
+
+function cornerToPathSpline(corner) {
+    if (edgesOnSameHex(corner)) return innerElbowSpline(corner)
+    else return outerElbowSpline(corner)
+}
+
+function innerElbowSpline(corner) {
+
+}
+
+function outerElbowSpline(corner) {
+
+}
+
+function edgesOnSameHex(corner) {
+    var hex0 = corner[0].hexCoord
+    var hex1 = corner[1].hexCoord
+    return hex0.x == hex1.x && hex0.y == hex1.y
+}
+
+
 function cycleToD(basis, cycle) {
     var points = _.reduce(cycle, function(acc, edge) {  // TODO: handle cycle endpoints well.
         return acc.concat(edgeToPoints(basis, edge))
@@ -175,7 +204,7 @@ function cycleToD(basis, cycle) {
 
 function edgeToPoints(basis, edge) {
     //TODO: change this to be more flexible
-    var vs = hm.hexVertices(basis, edge.owner)
+    var vs = hm.hexVertices(basis, edge.owner, edge.path.innerScale)
     switch (edge.position) {
         case "upRight":   return [vs[0], vs[1]]  // TODO: give these names.
         case "downRight": return [vs[1], vs[2]]
@@ -192,8 +221,6 @@ function edgeToPoints(basis, edge) {
 function edgeName(hexCoord, position) { // position in relation to hex ("up", "downLeft", etc.)
     return "edge_"+hexCoord.x+"_"+hexCoord.y+"_pos_"+position
 }
-
-
 
 module.exports = {
     render: render,

@@ -12,6 +12,10 @@ function hexBasis(v1, v2) {
     return {v1: v1, v2: v2}
 }
 
+function scaleBasis(basis, scalar) {
+    return {v1: alg.vScalarMult(basis.v1, scalar), v2: alg.vScalarMult(basis.v2, scalar)}
+}
+
 function hexToCartesianMatrix(basis) {
     return alg.vectorsToMatrix(basis.v1, basis.v2)
 }
@@ -71,9 +75,10 @@ function hexVerticesCenteredOnOrigin(basis) { //in screen coordinates
     return [up, out, down, alg.vInverse(up), alg.vInverse(out), alg.vInverse(down)]
 }
 
-function hexVertices(basis, hexPoint) {
+function hexVertices(basis, hexPoint, innerScale) {
+    var innerBasis = (!!innerScale) ? scaleBasis(basis, innerScale) : basis
     var translation = hexToCartesianTransformer(basis)(hexPoint)
-    return hexVerticesCenteredOnOrigin(basis).map(function (v) {
+    return hexVerticesCenteredOnOrigin(innerBasis).map(function (v) {
        return alg.vAdd(v, translation) 
     })
 }
@@ -100,6 +105,26 @@ function adjPt(point, deltaX, deltaY) {
     return {x: point.x + deltaX, y: point.y + deltaY}
 }
 
+
+// elbow math 
+
+/*  Given two hexes inset in our hex lattice by innerHexScale, we draw two lines from the center of hex A 
+ *  through the closest edge of hex B; this gives us a segment, scaled down from the edges of the outer hexes 
+ *  in our lattice by outerElbowScale.  These lines also pass through the edge of hex A closest to hex B. 
+ *  We wish to find how much this segment is scaled down from the inner hex edge length.
+ */
+function innerElbowScale(outerElbowScale, innerHexScale) {
+    return outerElbowScale / (2 - innerHexScale)
+}
+
+
+/* Given a segment, find the colinear segment scaled by finalScale which shares its midpoint with the original segment. */
+function shrinkSegment(point1, point2, finalScale) {
+    var scale = (1 - finalScale) / 2
+    var direction = alg.vScalarMult(alg.vSubtract(point2, point1), scale)
+    return [alg.vAdd(point1, direction), alg.vSubtract(point2, direction)]
+}
+
 module.exports = {
     hexBasis: hexBasis,
     hexVertices: hexVertices,
@@ -112,5 +137,8 @@ module.exports = {
     down: down,
     downLeft: downLeft,
     upLeft: upLeft,
-    up: up
+    up: up,
+
+    innerElbowScale: innerElbowScale,
+    shrinkSegment: shrinkSegment,
 }

@@ -16,6 +16,10 @@ function linearPath(points) {
     return "L" + svgPoints(points)
 }
 
+function quadraticBezier(control, endpoint) {
+    return "B" + svgPoint(control) + " " + svgPoint(endpoint)
+}
+
 function cycle(points) {
     var first = _.first(points)
     var rotated = _.rest(points)
@@ -28,7 +32,8 @@ function polygon(points, color) {
 }
 
 function path(d, pathInfo) {
-    return "<path pointer-events='none' fill-rule='evenodd' fill="+pathInfo.fillColor+" stroke="+pathInfo.strokeColor+" stroke-width="+pathInfo.strokeWidth+" d='"+ d +"'/>"
+    console.log("stroke width", pathInfo.strokeWidth)
+    return "<path pointer-events='none' fill-rule='evenodd' fill="+pathInfo.fillColor+" stroke="+pathInfo.strokeColor+" stroke-width="+pathInfo.strokeWidth+" stroke-linecap='round' d='"+ d +"'/>"
 }
 
 
@@ -36,5 +41,6 @@ module.exports = {
     svgPoints: svgPoints,
     polygon: polygon,
     path: path,
-    cycle: cycle
+    cycle: cycle,
+    quadraticBezier: quadraticBezier,
 }
