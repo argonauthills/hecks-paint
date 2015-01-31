@@ -11,14 +11,28 @@ function defaultToolList() {
     ]
     return {
         current: tools[0],
-        tools: tools
+        tools: tools,
+        subscribedCallbacks: []
     }
 }
+
+// SUBSCRIPTIONS  // TODO: generalize this from pLib and tLib
+
+function addSubscribedCallback(pathList, callback) {
+    pathList.subscribedCallbacks.push(callback)
+}
+
+function runSubscriptions(pathList) {
+    pathList.subscribedCallbacks.map(function(callback) {callback()})
+}
+
+// LIBRARY
 
 function switchTool(toolList, id) {
     var current = _.find(toolList.tools, function(tool) {return id == tool.id})
     if (!current) throw new Error(id + " is not in the toollist.")
     toolList.current = current
+    runSubscriptions(toolList)
 }
 
 
@@ -34,7 +48,7 @@ function drawTool() {
     function drawDragAction(event, previousMouseMoveCoords, grid, basis, currentPath) {
         var mouseCoords = mouse.mouseEventCoords(event)
         var hexCoords = mouse.mouseEventHexCoords(basis, event)
-        
+
         if (!previousMouseMoveCoords) g.addHexToPath(grid, currentPath, hexCoords)
         else addLineOfHexes(grid, currentPath, basis, previousMouseMoveCoords, mouseCoords)
     }
@@ -89,5 +103,6 @@ function createTool(id, canvasClickAction, canvasDragAction) {
 module.exports = {
     defaultToolList: defaultToolList,
     switchTool: switchTool,
+    addSubscribedCallback: addSubscribedCallback
 
 }

@@ -30,6 +30,7 @@ var downloader = require('./components/downloader')(document.getElementById("dow
 var colors = require('./components/color-picker')(document.getElementById('color-picker'), pathSettings)
 var strokes = require('./components/stroke-styler')(document.getElementById('stroke-styler'), pathSettings)
 var paths = require('./components/paths')(document.getElementById("path-list"), pathSettings)
+var tools = require('./components/tools')(document.getElementById("tool-list"), toolSettings)
 
 document.getElementById("heck-mode-button").addEventListener("click", function() {pLib.heckMode(pathSettings)})
 
@@ -41,3 +42,5 @@ document.getElementById("heck-mode-button").addEventListener("click", function()
 pLib.addSubscribedCallback(pathSettings, canvas.render)
 pLib.addSubscribedCallback(pathSettings, colors.render)
 pLib.addSubscribedCallback(pathSettings, paths.render)
+
+tLib.addSubscribedCallback(toolSettings, tools.render)
