@@ -101,7 +101,7 @@ function path(fillColor, strokeColor, strokeWidth, renderFunc, innerScale) {
         fillColor: fillColor || "black",
         strokeColor: strokeColor || "black",
         strokeWidth: strokeWidth || 2,
-        innerScale: .93,
+        innerScale: .75,//.93,
         id: bm.randomId(),
         pathRenderFunc: hexRender.curvedRenderPath, //normalRenderPath,
         renderFunc: hexRender.normalRender,  

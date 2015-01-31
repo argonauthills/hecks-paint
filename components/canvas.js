@@ -59,7 +59,6 @@ function mouseMoveHandler(element, grid, basis, pathSettings, tools) {
 
 function render(element, grid, basis) {
     var html = hexRender.render(grid, basis) //svgString(grid, basis)
-    console.log("render html", html)
     element.innerHTML = html
 }
 

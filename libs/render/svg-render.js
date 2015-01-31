@@ -35,6 +35,10 @@ function cycle(points) {
     return moveTo(first) + " " + linearPath(rotated)
 }
 
+// function zeroedD(dString) {
+//     return moveTo(0,0) + dString + moveTo(0,0)
+// }
+
 function polygon(points, color) {
     return "<polygon pointer-events='none' points='"+svgPoints(points)+"' style='black'/>"
 }
@@ -51,6 +55,7 @@ module.exports = {
     cycle: cycle,
     quadraticBezier: quadraticBezier,
     smoothQuadraticBezier: smoothQuadraticBezier,
+    // zeroedD: zeroedD,
     lineTo: lineTo,
     moveTo: moveTo
 }

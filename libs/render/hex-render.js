@@ -50,7 +50,6 @@ function getEdgesFromHex(grid, hexCoord) {
 
 function edgeCycles(edges) {
     var checklist = edgeChecklist(edges)
-    var initLength = checklistLength(checklist)
     var cycles = []
     var currentCycle = []
     var currentEdge = arbitraryChecklistItem(checklist)
@@ -60,13 +59,12 @@ function edgeCycles(edges) {
         var opt0 = options[0]
         var opt1 = options[1]
 
+        currentCycle.push(currentEdge)
         removeFromChecklist(checklist, currentEdge.id)
 
         if (isInChecklist(checklist, opt0)) {
-            currentCycle.push(checklist[opt0])
             currentEdge = checklist[opt0]
         } else if (isInChecklist(checklist, opt1)) {
-            currentCycle.push(checklist[opt1])
             currentEdge = checklist[opt1]
         } else {
             cycles.push(currentCycle)
@@ -100,10 +98,6 @@ function heckEdgeCycles(edges) {  // buggy code; makes great glitch art.
     })
     cycles.push(currentCycle)  // because the last cycle wouldn't get pushed otherwise
     return cycles
-}
-
-function checklistLength(checklist) {
-    return _.keys(checklist).length  // I don't love this length function
 }
 
 function arbitraryChecklistItem(checklist) {
@@ -168,20 +162,17 @@ function heckRenderPath(basis, cycles, pathInfo) {
 }
 
 function curvedRenderPath(basis, cycles, pathInfo) {
-    return _.map(cycles, function(cycle) {
-        console.log("cycle", cycle)
+    return svgRender.path(_.map(cycles, function(cycle) {
         var corners = _.zip(cycle, modash.rotated(cycle))
-        console.log("rotated", modash.rotated(cycle))
         var initial = cycleFirstPoint(basis, cycle)
 
-        var d = svgRender.moveTo(initial) + " " +
+        return svgRender.moveTo(initial) + " " +
             _.map(corners, function(corner) {
                 return cornerToPathSpline(basis, corner)
             }).join(" ") +
             " " +
             svgRender.lineTo(initial)
-        return svgRender.path(d, pathInfo)
-    }).join(" ")
+    }).join(" "), pathInfo)
 }
 
 function cycleFirstPoint(basis, cycle) {
