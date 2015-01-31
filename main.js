@@ -9,8 +9,8 @@ var tLib = require('./libs/tools')
 ///////////////////
 
 var basis = hex.hexBasis(
-    alg.vScalarMult({x:6, y:0}, 6),
-    alg.vScalarMult({x:3, y:Math.sqrt(3)}, 6)
+    alg.vScalarMult({x:6, y:0}, 12),  //6
+    alg.vScalarMult({x:3, y:Math.sqrt(3)}, 12)
 )
 
 var grid = require('./libs/grid').newGrid()
@@ -28,7 +28,7 @@ var canvas = require('./components/canvas')(document.getElementById("canvas"), g
 
 var downloader = require('./components/downloader')(document.getElementById("downloader"), grid, basis, pathSettings)
 var colors = require('./components/color-picker')(document.getElementById('color-picker'), pathSettings)
-var strokes = require('./components/stroke-styler')(document.getElementById('stroke-styler'), pathSettings)
+var strokes = require('./components/render-styler')(document.getElementById('stroke-styler'), pathSettings)
 var paths = require('./components/paths')(document.getElementById("path-list"), pathSettings)
 var tools = require('./components/tools')(document.getElementById("tool-list"), toolSettings)
 

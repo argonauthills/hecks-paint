@@ -114,6 +114,7 @@ function adjPt(point, deltaX, deltaY) {
  *  We wish to find how much this segment is scaled down from the inner hex edge length.
  */
 function innerElbowScale(outerElbowScale, innerHexScale) {
+    console.log ("outer", outerElbowScale, innerHexScale)
     return outerElbowScale / (2 - innerHexScale)
 }
 
@@ -121,7 +122,9 @@ function innerElbowScale(outerElbowScale, innerHexScale) {
 /* Given a segment, find the colinear segment scaled by finalScale which shares its midpoint with the original segment. */
 function shrinkSegment(point1, point2, finalScale) {
     var scale = (1 - finalScale) / 2
+    console.log("scale", scale)
     var direction = alg.vScalarMult(alg.vSubtract(point2, point1), scale)
+    console.log("direction", direction)
     return [alg.vAdd(point1, direction), alg.vSubtract(point2, direction)]
 }
 
@@ -141,4 +144,7 @@ module.exports = {
 
     innerElbowScale: innerElbowScale,
     shrinkSegment: shrinkSegment,
+
+    innerElbowScale: innerElbowScale,
+    shrinkSegment: shrinkSegment
 }

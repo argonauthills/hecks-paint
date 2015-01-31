@@ -12,12 +12,20 @@ function moveTo(point) {
     return "M" + svgPoint(point)
 }
 
+function lineTo(point) {
+    return "L" + svgPoint(point)
+}
+
 function linearPath(points) {
     return "L" + svgPoints(points)
 }
 
 function quadraticBezier(control, endpoint) {
-    return "B" + svgPoint(control) + " " + svgPoint(endpoint)
+    return "Q" + svgPoint(control) + " " + svgPoint(endpoint)
+}
+
+function smoothQuadraticBezier(endpoint) {
+    return "T" + svgPoint(endpoint)
 }
 
 function cycle(points) {
@@ -42,4 +50,7 @@ module.exports = {
     path: path,
     cycle: cycle,
     quadraticBezier: quadraticBezier,
+    smoothQuadraticBezier: smoothQuadraticBezier,
+    lineTo: lineTo,
+    moveTo: moveTo
 }

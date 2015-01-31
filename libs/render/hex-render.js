@@ -1,4 +1,5 @@
 var hm = require('../math/hex')
+var alg = require('../math/linear-algebra')
 var g = require('../grid')
 var _ = require('lodash')
 var svgRender = require('./svg-render')
@@ -146,7 +147,7 @@ function nextEdgeOptions(edge) {  //TODO consider getting more of this info from
 
 function render(grid, basis) {
     var groupedEdges = edgesGroupedByPath(grid)
-    return _.map(groupedEdges, function(edges) {
+    return  _.map(groupedEdges, function(edges) {
         var pathInfo = edges[0].path // every edge has this information; we just need it from one
         var cycles = (pathInfo.heckMode) ? heckEdgeCycles(edges) : edgeCycles(edges)
         var pathRenderFunc = pathInfo.pathRenderFunc
@@ -167,30 +168,44 @@ function heckRenderPath(basis, cycles, pathInfo) {
 }
 
 function curvedRenderPath(basis, cycles, pathInfo) {
-    _.map(cycles, function(cycle) {
+    return _.map(cycles, function(cycle) {
+        console.log("cycle", cycle)
         var corners = _.zip(cycle, modash.rotated(cycle))
-        return _.map(corners, function(corner) {
-            return cornerToPathSpline(corner)
-        })
-    })
+        console.log("rotated", modash.rotated(cycle))
+        var initial = cycleFirstPoint(basis, cycle)
+
+        var d = svgRender.moveTo(initial) + " " +
+            _.map(corners, function(corner) {
+                return cornerToPathSpline(basis, corner)
+            }).join(" ") +
+            " " +
+            svgRender.lineTo(initial)
+        return svgRender.path(d, pathInfo)
+    }).join(" ")
 }
 
-function cornerToPathSpline(corner) {
-    if (edgesOnSameHex(corner)) return innerElbowSpline(corner)
-    else return outerElbowSpline(corner)
+function cycleFirstPoint(basis, cycle) {
+    return alg.midpoint(edgeToPoints(basis, cycle[0]))
 }
 
-function innerElbowSpline(corner) {
-
+function cornerToPathSpline(basis, corner) {
+    var outerElbowScale = .6
+    if (edgesOnSameHex(corner)) return elbowSpline(basis, corner, hm.innerElbowScale(outerElbowScale, 1))
+    else return elbowSpline(basis, corner, outerElbowScale)
 }
 
-function outerElbowSpline(corner) {
+function elbowSpline(basis, corner, scaleFactor) {
+    var cPoints = corner.map(function(edge) {return edgeToPoints(basis, edge)})
+    var edge0 = hm.shrinkSegment(cPoints[0][0], cPoints[0][1], scaleFactor)
+    var edge1 = hm.shrinkSegment(cPoints[1][0], cPoints[1][1], scaleFactor)
+    var intersection = alg.lineIntersection(edge0, edge1)
 
+    return svgRender.lineTo(edge0[1]) + " " + svgRender.quadraticBezier(intersection, edge1[0])
 }
 
 function edgesOnSameHex(corner) {
-    var hex0 = corner[0].hexCoord
-    var hex1 = corner[1].hexCoord
+    var hex0 = corner[0].owner
+    var hex1 = corner[1].owner
     return hex0.x == hex1.x && hex0.y == hex1.y
 }
 
@@ -225,5 +240,6 @@ function edgeName(hexCoord, position) { // position in relation to hex ("up", "d
 module.exports = {
     render: render,
     normalRenderPath: normalRenderPath,
-    heckRenderPath: heckRenderPath
+    heckRenderPath: heckRenderPath,
+    curvedRenderPath: curvedRenderPath
 }
