@@ -9,8 +9,8 @@ var tLib = require('./libs/tools')
 ///////////////////
 
 var basis = hex.hexBasis(
-    alg.vScalarMult({x:6, y:0}, 12),  //6
-    alg.vScalarMult({x:3, y:Math.sqrt(3)}, 12)
+    alg.vScalarMult({x:6, y:0}, 8),  //6
+    alg.vScalarMult({x:3, y:Math.sqrt(3)}, 8)
 )
 
 var grid = require('./libs/grid').newGrid()
