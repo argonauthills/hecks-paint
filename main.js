@@ -17,14 +17,14 @@ var grid = require('./libs/grid').newGrid()
 
 var pathSettings = pLib.defaultPathList(basis)
 
-var tools = tLib.defaultToolList()
+var toolSettings = tLib.defaultToolList()
 
 
 ///////////////////
 // Components /////
 ///////////////////
 
-var canvas = require('./components/canvas')(document.getElementById("canvas"), grid, basis, pathSettings, tools)
+var canvas = require('./components/canvas')(document.getElementById("canvas"), grid, basis, pathSettings, toolSettings)
 
 var downloader = require('./components/downloader')(document.getElementById("downloader"), grid, basis, pathSettings)
 var colors = require('./components/color-picker')(document.getElementById('color-picker'), pathSettings)
