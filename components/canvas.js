@@ -6,14 +6,15 @@ var _ = require('lodash')
 var svgRender = require('../libs/render/svg-render')
 var hexRender = require('../libs/render/hex-render')
 var noQuery = require('../libs/no-query')
+var mouse = require('../libs/mouse')
 
 
 var mouseDown = false;
 var previousMouseMoveCoords = null
 
-module.exports = function main (element, grid, basis, pathSettings) {
+module.exports = function main (element, grid, basis, pathSettings, tools) {
 
-    element.onmousedown = function() {   // TODO: make more robust
+    element.onmousedown = function() {   // TODO: make more robust; I also don't love this here; see if we can move it into the mouse or tools library.
         mouseDown = true
     }
     document.body.onmouseup = function() {
@@ -22,8 +23,8 @@ module.exports = function main (element, grid, basis, pathSettings) {
     }
 
 
-    element.addEventListener("mousemove", mouseMoveHandler(element, grid, basis, pathSettings))
-    element.addEventListener("click", clickHandler(element, grid, basis, pathSettings))
+    element.addEventListener("mousemove", mouseMoveHandler(element, grid, basis, pathSettings, tools))
+    element.addEventListener("click", clickHandler(element, grid, basis, pathSettings, tools))
 
     //TODO: hack : delete this:
     var downloadAnchor = document.getElementById("downloader-anchor")
@@ -37,57 +38,23 @@ module.exports = function main (element, grid, basis, pathSettings) {
 }
 
 
-function clickHandler(element, grid, basis, pathSettings) {
+function clickHandler(element, grid, basis, pathSettings, tools) {
     return function (event) {
-        var hexCoords = mouseEventHexCoords(basis, event)
-        g.addHexToPath(grid, pathSettings.current, hexCoords)
+        tools.current.canvasClickAction(event, grid, basis, pathSettings.current)
         render(element, grid, basis)
-        console.log("grid", grid)
     }
 }
 
-function mouseMoveHandler(element, grid, basis, pathSettings) {
+function mouseMoveHandler(element, grid, basis, pathSettings, tools) {
     return function (event) {
         if (!mouseDown) return
         else {
-            var mouseCoords = mouseEventCoords(event)
-            var hexCoords = mouseEventHexCoords(basis, event)
-            if (g.isHexInPath(grid, pathSettings.current, hexCoords)) return 
-            else if (!previousMouseMoveCoords) {
-                g.addHexToPath(grid, pathSettings.current, hexCoords)
-                render(element, grid, basis)
-                previousMouseMoveCoords = mouseCoords
-            }
-            else {
-                addLineOfHexes(grid, pathSettings.current, basis, previousMouseMoveCoords, mouseCoords)
-                render(element, grid, basis)
-                previousMouseMoveCoords = mouseCoords
-            }
-            
+            var mouseCoords = mouse.mouseEventCoords(event)
+            tools.current.canvasDragAction(event, previousMouseMoveCoords, grid, basis, pathSettings.current)
+            previousMouseMoveCoords = mouseCoords
+            render(element, grid, basis)
         }
     }
-}
-
-function addLineOfHexes(grid, path, basis, initialCoords, finalCoords) {
-    var numPoints = basic.pythagorean(basis.v1.x, basis.v1.y)  //TODO: better interpolation estimate
-    var coords = basic.interpolatedSegment(initialCoords, finalCoords, numPoints)
-    coords.map(function(coord) {
-        var c = hex.whichHex(basis, coord)
-        g.addHexToPath(grid, path, c)
-    })
-}
-
-function mouseEventCoords(event) {
-    var width = event.target.offsetWidth
-    var height = event.target.offsetHeight
-    var x = event.offsetX
-    var y = event.offsetY
-    return {x: x - width/2, y: y - height/2}
-}
-
-function mouseEventHexCoords(basis, event) {
-    var point = mouseEventCoords(event)
-    return hex.whichHex(basis, point)
 }
 
 function render(element, grid, basis) {
