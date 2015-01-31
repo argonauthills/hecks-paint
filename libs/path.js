@@ -122,7 +122,6 @@ function changeStroke(path, color) {
 }
 
 function changeStrokeWidth(path, width) {
-    console.log("changeStrokeWidth")
     path.strokeWidth = width
 }
 

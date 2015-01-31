@@ -3,7 +3,6 @@ var hex = require('./libs/math/hex')
 var pLib = require('./libs/path')
 var tLib = require('./libs/tools')
 
-var tools = tLib.defaultToolList()
 
 ///////////////////
 // Global State ///
@@ -17,6 +16,8 @@ var basis = hex.hexBasis(
 var grid = require('./libs/grid').newGrid()
 
 var pathSettings = pLib.defaultPathList(basis)
+
+var tools = tLib.defaultToolList()
 
 
 ///////////////////
