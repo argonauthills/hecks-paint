@@ -26,7 +26,12 @@ function showElement(el) {
 }
 
 function svgHref(anchor, svgString){
-    anchor.setAttribute("download", "test.svg");    
+    anchor.setAttribute("download", filename());    
     var url = "data:image/svg+xml;utf8," + encodeURI(svgRender.wrapSvg(svgString));
     anchor.setAttribute("href", url);
+}
+
+function filename() {
+    var now = new Date()
+    return "hecks-paint-"+now.valueOf()+".svg"
 }
