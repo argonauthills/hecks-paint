@@ -1,16 +1,43 @@
 var pLib = require('../libs/path')
 
-module.exports = function main (element, pathSettings) {
-    var size = .75
-    var scaleFactor = .8
-    document.getElementById("hex-size-up-button").addEventListener("click", function(event) {
-        size /= scaleFactor
-        pLib.changeAllInnerScales(pathSettings, size)
-    })
-    document.getElementById("hex-size-down-button").addEventListener("click", function(event) {
-        size *= scaleFactor
-        pLib.changeAllInnerScales(pathSettings, size)
-    })
+var size = .75
+var scaleFactor = .8
+var repeatInterval
 
-    // element.addEventListener("click", clickHandler(pathSettings))
+module.exports = function main (element, pathSettings) {
+
+    holdDownClickListener(document.getElementById("hex-size-up-button"), function() {return scaleUp(pathSettings)}, 100)
+    holdDownClickListener(document.getElementById("hex-size-down-button"), function() {return scaleDown(pathSettings)}, 100)
+}
+
+function holdDownClickListener(element, action, time) {
+    var t
+
+    element.addEventListener("mousedown", function(event) { repeat() })
+
+    element.addEventListener("mouseup", function(event) { clear() })
+    element.addEventListener("mouseleave", function(event) { clear() })
+
+    function repeat() {
+        action()
+        t = setTimeout(repeat, time)
+    }
+
+    function clear() {
+        if (!!t) {
+            clearTimeout(t)
+            t = null
+        }
+    }
+}
+
+
+function scaleUp(pathSettings) {
+    size /= scaleFactor
+    pLib.changeAllInnerScales(pathSettings, size)
+}
+
+function scaleDown(pathSettings) {
+    size *= scaleFactor
+    pLib.changeAllInnerScales(pathSettings, size)
 }
