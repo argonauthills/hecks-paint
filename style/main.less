@@ -1,5 +1,104 @@
-@import "./layout.less";
+@import "./colors.less";
+
 
 * {
     box-sizing: border-box;
+}
+
+
+@toolbar-width: 350px;
+
+body {
+    background-color: @background;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+button {
+    outline: none;
+    background-color: @light;
+    padding: 5px 7px;
+    border-width: 0;
+    margin: 2px -2px;
+    &:active{
+        background-color: @highlight;
+    }
+}
+
+a {
+    color: @highlight;
+}
+
+.main {
+    // width: 1024px;
+    // margin: auto;
+}
+
+.logo-box {
+    width: 100px;
+    height: 100px;
+}
+
+.toolbar {
+    height: 100%;
+    position: fixed;
+    top:0;
+    // right: 0;
+    width: @toolbar-width;
+}
+
+.bottom-toolbar {
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 20px;
+}
+
+.canvas-container {
+    height: 100%;
+    padding-left: @toolbar-width;
+}
+
+.canvas {
+    width: 900px;
+    height: 900px;
+    background-color: @canvas-background;
+}
+
+.path-list:after {
+    clear:both;
+}
+
+.path-button {
+    border: 2px solid transparent;
+    padding: 2px;
+    background-color: transparent;
+    height: 50px;
+    width: 50px;
+    &.path-box-selected {
+        border-color:black;
+    }
+}
+
+.tool-button {
+    &.tool-selected {
+        background-color: @highlight;
+    }
+}
+
+.path-sample {
+    border: 3px solid;
+    height: 100%;
+    width: 100%;
+}
+
+.color-button {
+    height: 30px;
+    width: 30px;
+}
+
+.clearfix {
+    clear:both;
+}
+
+.hidden {
+    visibility: hidden;
 }

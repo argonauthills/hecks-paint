@@ -71,6 +71,13 @@ function changeCurrentStrokeWidth(pathList, color) {
     runSubscriptions(pathList)
 }
 
+function changeAllInnerScales(pathList, size) {
+    pathList.paths.map(function(path) {
+        path.innerScale = size
+    })
+    runSubscriptions(pathList)
+}
+
 function heckMode(pathList) {
     pathList.paths.map(function(path) { path.heckMode = true})
     changeAllRenderFuncs(pathList, hexRender.heckRenderPath)
@@ -134,6 +141,7 @@ module.exports =  {
     changeCurrentFill: changeCurrentFill,
     changeCurrentStroke: changeCurrentStroke,
     changeCurrentStrokeWidth: changeCurrentStrokeWidth,
+    changeAllInnerScales: changeAllInnerScales,
     // changeFill: changeFill,
     // changeStroke: changeStroke,
     defaultPathList: defaultPathList,

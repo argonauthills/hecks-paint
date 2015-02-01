@@ -27,7 +27,7 @@ var toolSettings = tLib.defaultToolList()
 var canvas = require('./components/canvas')(document.getElementById("canvas"), grid, basis, pathSettings, toolSettings)
 
 var downloader = require('./components/downloader')(document.getElementById("downloader"), grid, basis, pathSettings)
-var colors = require('./components/color-picker')(document.getElementById('color-picker'), pathSettings)
+// var colors = require('./components/color-picker')(document.getElementById('color-picker'), pathSettings)
 var strokes = require('./components/render-styler')(document.getElementById('stroke-styler'), pathSettings)
 var paths = require('./components/paths')(document.getElementById("path-list"), pathSettings)
 var tools = require('./components/tools')(document.getElementById("tool-list"), toolSettings)
@@ -40,7 +40,7 @@ document.getElementById("heck-mode-button").addEventListener("click", function()
 ////////////////////////////
 
 pLib.addSubscribedCallback(pathSettings, canvas.render)
-pLib.addSubscribedCallback(pathSettings, colors.render)
+// pLib.addSubscribedCallback(pathSettings, colors.render)
 pLib.addSubscribedCallback(pathSettings, paths.render)
 
 tLib.addSubscribedCallback(toolSettings, tools.render)
