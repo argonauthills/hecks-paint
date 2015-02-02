@@ -416,7 +416,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var bm = __webpack_require__(15)
-	var _ = __webpack_require__(21)
+	var _ = __webpack_require__(22)
 	var hexRender = __webpack_require__(16)
 	var cLib = __webpack_require__(17)
 
@@ -572,8 +572,8 @@
 	var g = __webpack_require__(8)
 	var basic = __webpack_require__(15)
 	var hex = __webpack_require__(5)
-	var mouse = __webpack_require__(20)
-	var _ = __webpack_require__(21)
+	var mouse = __webpack_require__(18)
+	var _ = __webpack_require__(22)
 
 	function defaultToolList() {
 	    var tools = [
@@ -682,7 +682,7 @@
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(21)
+	var _ = __webpack_require__(22)
 	var pLib = __webpack_require__(6)
 
 	function newGrid() { return {} }
@@ -753,11 +753,11 @@
 	var basic = __webpack_require__(15)
 	var g = __webpack_require__(8)
 	var pLib = __webpack_require__(6)
-	var _ = __webpack_require__(21)
-	var svgRender = __webpack_require__(18)
+	var _ = __webpack_require__(22)
+	var svgRender = __webpack_require__(19)
 	var hexRender = __webpack_require__(16)
-	var noQuery = __webpack_require__(19)
-	var mouse = __webpack_require__(20)
+	var noQuery = __webpack_require__(20)
+	var mouse = __webpack_require__(18)
 
 
 	var mouseDown = false;
@@ -813,8 +813,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var hexRender = __webpack_require__(16)
-	var svgRender = __webpack_require__(18)
-	var _ = __webpack_require__(21)
+	var svgRender = __webpack_require__(19)
+	var _ = __webpack_require__(22)
 
 	module.exports = function(element, grid, basis, pathsList) {
 	    var downloadAnchor = document.getElementById("downloader-anchor")
@@ -840,9 +840,14 @@
 	}
 
 	function svgHref(anchor, svgString){
-	    anchor.setAttribute("download", "test.svg");    
+	    anchor.setAttribute("download", filename());    
 	    var url = "data:image/svg+xml;utf8," + encodeURI(svgRender.wrapSvg(svgString));
 	    anchor.setAttribute("href", url);
+	}
+
+	function filename() {
+	    var now = new Date()
+	    return "hecks-paint-"+now.valueOf()+".svg"
 	}
 
 /***/ },
@@ -1270,8 +1275,8 @@
 	var hm = __webpack_require__(5)
 	var alg = __webpack_require__(4)
 	var g = __webpack_require__(8)
-	var _ = __webpack_require__(21)
-	var svgRender = __webpack_require__(18)
+	var _ = __webpack_require__(22)
+	var svgRender = __webpack_require__(19)
 	var modash = __webpack_require__(23)
 
 	// GET EDGES, COLLECT BY PATH
@@ -1590,7 +1595,31 @@
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(21)
+	var hex = __webpack_require__(5)
+
+	function mouseEventCoords(event) {
+	    var width = event.target.offsetWidth
+	    var height = event.target.offsetHeight
+	    var x = event.offsetX
+	    var y = event.offsetY
+	    return {x: x - width/2, y: y - height/2}
+	}
+
+	function mouseEventHexCoords(basis, event) {
+	    var point = mouseEventCoords(event)
+	    return hex.whichHex(basis, point)
+	}
+
+	module.exports = {
+	    mouseEventCoords: mouseEventCoords,
+	    mouseEventHexCoords: mouseEventHexCoords
+	}
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var _ = __webpack_require__(22)
 
 	function svgPoint(point) {
 	    return point.x + ',' + point.y
@@ -1660,7 +1689,7 @@
 	}
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	function remove(el) {
@@ -1672,31 +1701,8 @@
 	}
 
 /***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var hex = __webpack_require__(5)
-
-	function mouseEventCoords(event) {
-	    var width = event.target.offsetWidth
-	    var height = event.target.offsetHeight
-	    var x = event.offsetX
-	    var y = event.offsetY
-	    return {x: x - width/2, y: y - height/2}
-	}
-
-	function mouseEventHexCoords(basis, event) {
-	    var point = mouseEventCoords(event)
-	    return hex.whichHex(basis, point)
-	}
-
-	module.exports = {
-	    mouseEventCoords: mouseEventCoords,
-	    mouseEventHexCoords: mouseEventHexCoords
-	}
-
-/***/ },
-/* 21 */
+/* 21 */,
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -12488,12 +12494,11 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25)(module), (function() { return this; }())))
 
 /***/ },
-/* 22 */,
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// mo stuff fo yo dash
-	var _ = __webpack_require__(21)
+	var _ = __webpack_require__(22)
 
 	function rotated(array) {  
 	    return _.rest(array).concat([_.first(array)])
